@@ -1,0 +1,16 @@
+{
+    "AK Patel": {
+        "domain": "https://www.akpatel.co.in",
+        "type":"HTML",
+        "records": [
+            {
+                "Name": "SILVER ($)",
+                "Buy": null,
+                "Sell": null,
+                "Low": null,
+                "High": null,
+                "Time": "12:35:53"
+            }
+        ]
+    }
+}

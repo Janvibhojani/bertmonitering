@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Client Test</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #eee;
+      margin: 0;
+      padding: 20px;
+    }
+    #messages {
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      background: #1e1e1e;
+      margin-bottom: 15px;
+    }
+    .msg { margin: 5px 0; }
+    input, button {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+    }
+    input {
+      width: 70%;
+      background: #222;
+      color: #eee;
+    }
+    button {
+      background: #3a86ff;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>💬 Socket.IO Client Test</h2>
+  <div id="messages"></div>
+  <input id="msgInput" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    const socket = io("http://localhost:5001");
+
+    socket.on("connect", () => {
+      addMsg("✅ Connected to server!");
+    });
+
+    socket.on("disconnect", () => {
+      addMsg("❌ Disconnected from server");
+    });
+
+    socket.on("server_message", data => {
+      addMsg(data.msg);
+    });
+
+    socket.on("live_data", data => {
+      addMsg("📡 Live Update: " + JSON.stringify(data));
+    });
+
+    function sendMessage() {
+      const msg = document.getElementById("msgInput").value.trim();
+      if (msg) {
+        socket.emit("client_message", msg);
+        document.getElementById("msgInput").value = "";
+      }
+    }
+
+    function addMsg(text) {
+      const div = document.getElementById("messages");
+      div.innerHTML += `<div class='msg'>${text}</div>`;
+      div.scrollTop = div.scrollHeight;
+    }
+  </script>
+</body>
+</html>
