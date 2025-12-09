@@ -1,543 +1,12 @@
 {
   "https://amsbullion.com/": {
-    "records": [
-      {
-        "Name": "SILVER ($)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "58.07",
-        "Buy": 58.07,
-        "Sell": 58.07,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "57.51",
-        "Buy": 57.51,
-        "Sell": 58.94,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD ($)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4199.05",
-        "Buy": 4199.05,
-        "Sell": 4199.05,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4194.33",
-        "Buy": 4194.33,
-        "Sell": 4228.88,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "INR (₹)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "90.232",
-        "Buy": 90.232,
-        "Sell": 90.232,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "89.929",
-        "Buy": 89.929,
-        "Sell": 90.295,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SILVER IMP 3-5 DEC (ALL) 30 KG",
-        "Buy": 3.0,
-        "Sell": 5.0,
-        "Low": 183775.0,
-        "High": 30.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SILVER IMP 3-5 DEC (ALL)",
-        "Buy": 3.0,
-        "Sell": null,
-        "Low": 5.0,
-        "High": 184075.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 999 IMP 3-5 DEC (ALL)",
-        "Buy": 999.0,
-        "Sell": 3.0,
-        "Low": 13238.2,
-        "High": 5.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 999 IMP 1KG Bar 3-4 DEC (ALL)",
-        "Buy": 999.0,
-        "Sell": 1.0,
-        "Low": 4.0,
-        "High": 3.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD",
-        "Buy": 130301.0,
-        "Sell": 130332.0,
-        "Low": 130109.0,
-        "High": 130955.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SILVER",
-        "Buy": 182227.0,
-        "Sell": 182275.0,
-        "Low": 180990.0,
-        "High": 184727.0,
-        "Time": "15:54:25"
-      }
-    ]
+    "records": []
   },
   "https://smsbullion.com/": {
-    "records": [
-      {
-        "Name": "GOLD ($)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4199.05",
-        "Buy": 4199.05,
-        "Sell": 4199.05,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4183.85",
-        "Buy": 4183.85,
-        "Sell": 4229.5,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SILVER ($)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "58.07",
-        "Buy": 58.07,
-        "Sell": 58.07,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "57.57",
-        "Buy": 57.57,
-        "Sell": 58.97,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "INR($)",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "90.232",
-        "Buy": 90.232,
-        "Sell": 90.232,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "89.973",
-        "Buy": 89.973,
-        "Sell": 90.345,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SMS FINE GOLD 999 - chennai (T+1)",
-        "Buy": 999.0,
-        "Sell": null,
-        "Low": 1.0,
-        "High": 13248.2,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "IMP GOLD 999-chennai",
-        "Buy": 999.0,
-        "Sell": 13258.2,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 999 -vijaywada",
-        "Buy": 999.0,
-        "Sell": 13258.2,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "9999 GOLD- coimbatore",
-        "Buy": 9999.0,
-        "Sell": 13264.2,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "SILVER",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      }
-    ]
+    "records": []
   },
   "https://www.arihantspot.in/": {
-    "records": [
-      {
-        "Name": "GOLD 995 (1kg) INDIAN-BIS T+0",
-        "Buy": 995,
-        "Sell": 1.0,
-        "Low": 127446.0,
-        "High": 0.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127145,
-        "Sell": 127145.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "127646",
-        "Buy": 127646,
-        "Sell": 127646.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128307,
-        "Sell": 128307.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 999 IMPORTED (LBMA)(1KG) T+0",
-        "Buy": 999,
-        "Sell": null,
-        "Low": 1.0,
-        "High": 0.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127745,
-        "Sell": 127745.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "128196",
-        "Buy": 128196,
-        "Sell": 128196.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128907,
-        "Sell": 128907.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 995 IMPORTED(1KG) T+0",
-        "Buy": 995,
-        "Sell": 1.0,
-        "Low": 127946.0,
-        "High": 0.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127445,
-        "Sell": 127445.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "128146",
-        "Buy": 128146,
-        "Sell": 128146.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128607,
-        "Sell": 128607.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 995 (500gm) T+0",
-        "Buy": 995,
-        "Sell": null,
-        "Low": 500.0,
-        "High": 0.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127145,
-        "Sell": 127145.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "127646",
-        "Buy": 127646,
-        "Sell": 127646.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128307,
-        "Sell": 128307.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 995 (1KG) INDIAN BIS 4th DEC",
-        "Buy": 995,
-        "Sell": 1.0,
-        "Low": 127496.0,
-        "High": 4.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127145,
-        "Sell": 127145.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "127746",
-        "Buy": 127746,
-        "Sell": 127746.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128357,
-        "Sell": 128357.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 999 IMPORTED (1kg)(LBMA) 4th DEC",
-        "Buy": 999,
-        "Sell": null,
-        "Low": 1.0,
-        "High": 4.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127745,
-        "Sell": 127745.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "128296",
-        "Buy": 128296,
-        "Sell": 128296.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128957,
-        "Sell": 128957.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 995 (500gm) 4th DEC",
-        "Buy": 995,
-        "Sell": null,
-        "Low": 500.0,
-        "High": 4.0,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 127145,
-        "Sell": 127145.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "127746",
-        "Buy": 127746,
-        "Sell": 127746.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 128357,
-        "Sell": 128357.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 995 WITH GST INDIAN-BIS",
-        "Buy": 995,
-        "Sell": 131269.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 130959,
-        "Sell": 130959.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "131475",
-        "Buy": 131475,
-        "Sell": 131475.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 132156,
-        "Sell": 132156.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "GOLD 999 IMP (LBMA) WITH GST",
-        "Buy": 999,
-        "Sell": 999.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "L :",
-        "Buy": 131575,
-        "Sell": 131575.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "132040",
-        "Buy": 132040,
-        "Sell": 132040.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      },
-      {
-        "Name": "H :",
-        "Buy": 132772,
-        "Sell": 132772.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:26"
-      }
-    ]
+    "records": []
   },
   "https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihant?_=1762294768052": [
     [
@@ -629,23 +98,23 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "4198.45",
-        "Buy": 4198.45,
-        "Sell": 4198.45,
+        "Name": "4198.55",
+        "Buy": 4198.55,
+        "Sell": 4198.55,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "4194.33",
-        "Buy": 4194.33,
-        "Sell": 4228.88,
+        "Name": "4175.26",
+        "Buy": 4175.26,
+        "Sell": 4216.75,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "Silver($)",
@@ -653,23 +122,23 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "58.06",
-        "Buy": 58.06,
-        "Sell": 58.06,
+        "Name": "57.55",
+        "Buy": 57.55,
+        "Sell": 57.55,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "57.51",
-        "Buy": 57.51,
-        "Sell": 58.94,
+        "Name": "56.59",
+        "Buy": 56.59,
+        "Sell": 58.74,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "INR(₹)",
@@ -677,237 +146,76 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "90.182",
-        "Buy": 90.182,
-        "Sell": 90.182,
+        "Name": "89.862",
+        "Buy": 89.862,
+        "Sell": 89.862,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
-        "Name": "89.929",
-        "Buy": 89.929,
-        "Sell": 90.295,
+        "Name": "89.839",
+        "Buy": 89.839,
+        "Sell": 90.423,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "GOLD CHE IMP(999)",
         "Buy": 999.0,
-        "Sell": 13238.2,
+        "Sell": 13184.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "GOLD VJA IMP (999)",
         "Buy": 999.0,
-        "Sell": 13240.2,
+        "Sell": 13186.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "GOLD CBE (9999)",
         "Buy": 9999.0,
-        "Sell": 13258.2,
+        "Sell": 13204.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "SILVER CHENNAI",
-        "Buy": 183575.0,
-        "Sell": 183575.0,
+        "Buy": 180866.0,
+        "Sell": 180866.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:25"
+        "Time": "17:48:19"
       },
       {
         "Name": "India Gold",
-        "Buy": 130301.0,
-        "Sell": 130332.0,
-        "Low": 130109.0,
-        "High": 130955.0,
-        "Time": "15:54:25"
+        "Buy": 129766.0,
+        "Sell": 129790.0,
+        "Low": 129454.0,
+        "High": 130799.0,
+        "Time": "17:48:19"
       },
       {
         "Name": "India Silver",
-        "Buy": 182227.0,
-        "Sell": 182275.0,
-        "Low": 180990.0,
-        "High": 184727.0,
-        "Time": "15:54:25"
+        "Buy": 179722.0,
+        "Sell": 179766.0,
+        "Low": 177289.0,
+        "High": 182887.0,
+        "Time": "17:48:19"
       }
     ]
   },
   "https://kjbullion.com/": {
-    "records": [
-      {
-        "Name": "Gold",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4199.05",
-        "Buy": 4199.05,
-        "Sell": 4199.05,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "4194.33",
-        "Buy": 4194.33,
-        "Sell": 4228.88,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "Silver",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "58.07",
-        "Buy": 58.07,
-        "Sell": 58.07,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "57.51",
-        "Buy": 57.51,
-        "Sell": 58.94,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "INR",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "90.232",
-        "Buy": 90.232,
-        "Sell": 90.232,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "89.929",
-        "Buy": 89.929,
-        "Sell": 90.295,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "Gold Current",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "130301",
-        "Buy": 130301.0,
-        "Sell": 130332.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "HIGH |",
-        "Buy": 130955.0,
-        "Sell": 130109.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "Silver Current",
-        "Buy": null,
-        "Sell": null,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "182227",
-        "Buy": 182227.0,
-        "Sell": 182275.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "HIGH |",
-        "Buy": 184727.0,
-        "Sell": 180990.0,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 100Gms 999 (Chennai)(T+0)",
-        "Buy": 100.0,
-        "Sell": 999.0,
-        "Low": 13233.2,
-        "High": 0.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 100Gms 999 (Coimbatore)(T+0)",
-        "Buy": 100.0,
-        "Sell": 999.0,
-        "Low": 13233.2,
-        "High": 0.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "Gold 100Gms 999 (Bangalore)(T+0)",
-        "Buy": 100.0,
-        "Sell": 999.0,
-        "Low": 13233.2,
-        "High": 0.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 100Gms 999 (Hyderabad)(T+0)",
-        "Buy": 100.0,
-        "Sell": 999.0,
-        "Low": 13233.2,
-        "High": 0.0,
-        "Time": "15:54:25"
-      },
-      {
-        "Name": "GOLD 100Gms 999 (Mumbai)(T+0)",
-        "Buy": 100.0,
-        "Sell": 999.0,
-        "Low": 13233.2,
-        "High": 0.0,
-        "Time": "15:54:25"
-      }
-    ]
+    "records": []
   },
   "https://ashtasiddhi.co.in/": {
     "records": [
@@ -917,7 +225,7 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       }
     ]
   },
@@ -929,7 +237,7 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       }
     ]
   },
@@ -944,39 +252,39 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "130301",
-        "Buy": 130301.0,
-        "Sell": 130301.0,
+        "Name": "129766",
+        "Buy": 129766.0,
+        "Sell": 129766.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "130955",
-        "Buy": 130955.0,
-        "Sell": 130955.0,
+        "Name": "130799",
+        "Buy": 130799.0,
+        "Sell": 130799.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "130332",
-        "Buy": 130332.0,
-        "Sell": 130332.0,
+        "Name": "129790",
+        "Buy": 129790.0,
+        "Sell": 129790.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "130109",
-        "Buy": 130109.0,
-        "Sell": 130109.0,
+        "Name": "129454",
+        "Buy": 129454.0,
+        "Sell": 129454.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
         "Name": "SILVER",
@@ -984,39 +292,39 @@
         "Sell": null,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "182226",
-        "Buy": 182226.0,
-        "Sell": 182226.0,
+        "Name": "179767",
+        "Buy": 179767.0,
+        "Sell": 179767.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "184727",
-        "Buy": 184727.0,
-        "Sell": 184727.0,
+        "Name": "182887",
+        "Buy": 182887.0,
+        "Sell": 182887.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "182265",
-        "Buy": 182265.0,
-        "Sell": 182265.0,
+        "Name": "179800",
+        "Buy": 179800.0,
+        "Sell": 179800.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       },
       {
-        "Name": "180990",
-        "Buy": 180990.0,
-        "Sell": 180990.0,
+        "Name": "177289",
+        "Buy": 177289.0,
+        "Sell": 177289.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:26"
+        "Time": "17:48:19"
       }
     ]
   },
@@ -1024,40 +332,265 @@
     "records": [
       {
         "Name": "GOLD BAR RTGS",
-        "Buy": 13227.0,
-        "Sell": 3,
+        "Buy": 13165.0,
+        "Sell": 4,
         "Low": 2025,
         "High": 12,
-        "Time": "15:54:26"
+        "Time": "17:48:20"
       },
       {
         "Name": "GOLD BAR UNFIX",
-        "Buy": 13262.0,
-        "Sell": 3,
+        "Buy": 13200.0,
+        "Sell": 4,
         "Low": 2025,
         "High": 12,
-        "Time": "15:54:26"
+        "Time": "17:48:20"
       },
       {
         "Name": "SILVER TODAY DELIVERY READY",
-        "Buy": 184770.0,
-        "Sell": 3,
+        "Buy": 181100.0,
+        "Sell": 4,
         "Low": 2025,
         "High": 12,
-        "Time": "15:54:26"
+        "Time": "17:48:20"
       },
       {
         "Name": "SILVER FANCY BAR 1 KG",
         "Buy": 1.0,
-        "Sell": 185270,
+        "Sell": 184100,
         "Low": 12,
-        "High": 3,
-        "Time": "15:54:26"
+        "High": 4,
+        "Time": "17:48:20"
       }
     ]
   },
   "http://www.manibhadrabullion.com/": {
-    "records": []
+    "records": [
+      {
+        "Name": "GOLD 999 IMP RTGS T+2",
+        "Buy": 999.0,
+        "Sell": 2.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 131535.0,
+        "Sell": 131535.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "131871",
+        "Buy": 131871.0,
+        "Sell": 131871.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H :",
+        "Buy": 132624.0,
+        "Sell": 132624.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "GOLD 999 IMP RTGS(TODAY)",
+        "Buy": 999.0,
+        "Sell": 999.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 131494.0,
+        "Sell": 131494.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "131830",
+        "Buy": 131830.0,
+        "Sell": 131830.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H :",
+        "Buy": 132583.0,
+        "Sell": 132583.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "GOLD",
+        "Buy": 4198.85,
+        "Sell": 4198.85,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 4175.26,
+        "Sell": 4175.26,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "4199.75",
+        "Buy": 4199.75,
+        "Sell": 4199.75,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H:",
+        "Buy": 4216.75,
+        "Sell": 4216.75,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "SILVER",
+        "Buy": 57.55,
+        "Sell": 57.55,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 56.59,
+        "Sell": 56.59,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "57.58",
+        "Buy": 57.58,
+        "Sell": 57.58,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H:",
+        "Buy": 58.74,
+        "Sell": 58.74,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "INR",
+        "Buy": 89.862,
+        "Sell": 89.862,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 89.839,
+        "Sell": 89.839,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "89.912",
+        "Buy": 89.912,
+        "Sell": 89.912,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H:",
+        "Buy": 90.423,
+        "Sell": 90.423,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "GOLD FUTURE",
+        "Buy": 129766.0,
+        "Sell": 129766.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 129464.0,
+        "Sell": 129464.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "129790",
+        "Buy": 129790.0,
+        "Sell": 129790.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H:",
+        "Buy": 130531.0,
+        "Sell": 130531.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "SILVER FUTURE",
+        "Buy": 179767.0,
+        "Sell": 179767.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "L :",
+        "Buy": 177378.0,
+        "Sell": 177378.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "179800",
+        "Buy": 179800.0,
+        "Sell": 179800.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      },
+      {
+        "Name": "H:",
+        "Buy": 182888.0,
+        "Sell": 182888.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:48:20"
+      }
+    ]
   },
   "https://bcast.sridhikshaabullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/sridhikshaa?_=": [
     [
@@ -1217,32 +750,32 @@
         "Buy": 10,
         "Sell": null,
         "Low": 0.0,
-        "High": 129122.0,
-        "Time": "15:54:27"
+        "High": 128570.0,
+        "Time": "17:48:23"
       },
       {
         "Name": "GOLD 100 GM",
         "Buy": 100,
-        "Sell": 129222.0,
+        "Sell": 128670.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:23"
       },
       {
         "Name": "SILVER 1 KG",
         "Buy": 1,
-        "Sell": 181969.0,
+        "Sell": 179539.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:23"
       },
       {
         "Name": "SILVER BULK",
-        "Buy": 181869,
-        "Sell": 181869.0,
+        "Buy": 179439,
+        "Sell": 179439.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:23"
       }
     ]
   },
@@ -1793,31 +1326,31 @@
         "Sell": 995,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "L :",
-        "Buy": 129867,
-        "Sell": 129867,
+        "Buy": 127058,
+        "Sell": 127058,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
-        "Name": "130072",
-        "Buy": 130072,
-        "Sell": 130072,
+        "Name": "127220",
+        "Buy": 127220,
+        "Sell": 127220,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "H :",
-        "Buy": 130630,
-        "Sell": 130630,
+        "Buy": 130271,
+        "Sell": 130271,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "Gold 999",
@@ -1825,31 +1358,31 @@
         "Sell": 999,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "L :",
-        "Buy": 130397,
-        "Sell": 130397,
+        "Buy": 127540,
+        "Sell": 127540,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
-        "Name": "130602",
-        "Buy": 130602,
-        "Sell": 130602,
+        "Name": "127800",
+        "Buy": 127800,
+        "Sell": 127800,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "H :",
-        "Buy": 131160,
-        "Sell": 131160,
+        "Buy": 130801,
+        "Sell": 130801,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "Gold 995 WITH GST",
@@ -1857,31 +1390,31 @@
         "Sell": 995,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "L :",
-        "Buy": 133763,
-        "Sell": 133763,
+        "Buy": 130870,
+        "Sell": 130870,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
-        "Name": "133974",
-        "Buy": 133974,
-        "Sell": 133974,
+        "Name": "131037",
+        "Buy": 131037,
+        "Sell": 131037,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "H :",
-        "Buy": 134549,
-        "Sell": 134549,
+        "Buy": 134179,
+        "Sell": 134179,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "GOLD 999 WITH GST",
@@ -1889,63 +1422,63 @@
         "Sell": 999,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "L :",
-        "Buy": 134309,
-        "Sell": 134309,
+        "Buy": 131366,
+        "Sell": 131366,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
-        "Name": "134520",
-        "Buy": 134520,
-        "Sell": 134520,
+        "Name": "131634",
+        "Buy": 131634,
+        "Sell": 131634,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "H :",
-        "Buy": 135095,
-        "Sell": 135095,
+        "Buy": 134725,
+        "Sell": 134725,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "GOLD COSTING",
-        "Buy": 130301,
-        "Sell": 130301,
+        "Buy": 129765,
+        "Sell": 129765,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "L :",
-        "Buy": 130127,
-        "Sell": 130127,
+        "Buy": 129464,
+        "Sell": 129464,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
-        "Name": "130332",
-        "Buy": 130332,
-        "Sell": 130332,
+        "Name": "129780",
+        "Buy": 129780,
+        "Sell": 129780,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       },
       {
         "Name": "H :",
-        "Buy": 130890,
-        "Sell": 130890,
+        "Buy": 130531,
+        "Sell": 130531,
         "Low": null,
         "High": null,
-        "Time": "15:54:27"
+        "Time": "17:48:24"
       }
     ]
   },
@@ -2660,130 +2193,34 @@
       {
         "Name": "GOLD (T+2)",
         "Buy": 2,
-        "Sell": 132026,
+        "Sell": 131705.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "L -",
-        "Buy": 132127,
-        "Sell": 132127,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "132332",
-        "Buy": 132332,
-        "Sell": 132332,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "H -",
-        "Buy": 132890,
-        "Sell": 132890,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
+        "Time": "17:48:26"
       },
       {
         "Name": "GOLD (50 -90) GMS",
         "Buy": 50,
-        "Sell": 90,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "L -",
-        "Buy": 132227,
-        "Sell": 132227,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "132432",
-        "Buy": 132432,
-        "Sell": 132432,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "H -",
-        "Buy": 132990,
-        "Sell": 132990,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
+        "Sell": null,
+        "Low": 90.0,
+        "High": 131805.0,
+        "Time": "17:48:26"
       },
       {
         "Name": "SILVER (30KG) BAR",
         "Buy": 30,
-        "Sell": 182727,
+        "Sell": 180889.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "L -",
-        "Buy": 182041,
-        "Sell": 182041,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "183319",
-        "Buy": 183319,
-        "Sell": 183319,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "H -",
-        "Buy": 185753,
-        "Sell": 185753,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
+        "Time": "17:48:26"
       },
       {
         "Name": "卐 (5KG) SILVER 卐",
         "Buy": 5,
-        "Sell": 182727,
+        "Sell": 179889.0,
         "Low": null,
         "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "L -",
-        "Buy": 181041,
-        "Sell": 181041,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "182319",
-        "Buy": 182319,
-        "Sell": 182319,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
-      },
-      {
-        "Name": "H -",
-        "Buy": 184753,
-        "Sell": 184753,
-        "Low": null,
-        "High": null,
-        "Time": "15:54:28"
+        "Time": "17:48:26"
       }
     ]
   },
@@ -5704,255 +5141,238 @@
     [
       "2580",
       "Gold",
-      "4199.05",
-      "4199.05",
-      "4229.50",
-      "4183.85"
+      "4199.15",
+      "4199.15",
+      "4217.30",
+      "4175.80"
     ],
     [
       "2581",
       "USD INR",
-      "90.241",
-      "90.241",
-      "90.295",
-      "89.929"
+      "89.891",
+      "89.891",
+      "90.423",
+      "89.839"
     ],
     [
       "2582",
       "GOLD COST",
-      "130332",
-      "130332",
-      "130907",
-      "129745"
+      "129787",
+      "129787",
+      "130531",
+      "129464"
     ],
     [
       "2736",
       "GOLD 995 (1kg) INDIAN-BIS T+0",
-      "127445",
-      "127645",
-      "128307",
-      "127145"
+      "126977",
+      "127177",
+      "127931",
+      "126784"
     ],
     [
       "2709",
       "GOLD 999 IMPORTED (LBMA)(1KG) T+0",
       "-",
-      "128195",
-      "128907",
-      "127745"
-    ],
-    [
-      "2648",
-      "GOLD 995 IMPORTED(1KG) T+0",
-      "127945",
-      "128145",
-      "128607",
-      "127445"
+      "127777",
+      "128531",
+      "127384"
     ],
     [
       "2673",
       "GOLD 995 (500gm) T+0",
       "-",
-      "127645",
-      "128307",
-      "127145"
+      "127177",
+      "127931",
+      "126784"
     ],
     [
       "2713",
-      "GOLD 995 (1KG) INDIAN BIS 4th DEC",
-      "127495",
-      "127745",
-      "128357",
-      "127145"
+      "GOLD 995 (1KG) INDIAN BIS 5th DEC",
+      "127027",
+      "127277",
+      "128031",
+      "126884"
     ],
     [
       "2746",
-      "GOLD 999 IMPORTED (1kg)(LBMA) 4th DEC",
+      "GOLD 999 IMPORTED (1kg)(LBMA) 5th DEC",
       "-",
-      "128295",
-      "128957",
-      "127745"
+      "127877",
+      "128631",
+      "127484"
     ],
     [
       "2711",
-      "GOLD 995 (500gm) 4th DEC",
+      "GOLD 995 (500gm) 5th DEC",
       "-",
-      "127745",
-      "128357",
-      "127145"
+      "127277",
+      "128031",
+      "126884"
     ],
     [
       "2688",
       "GOLD 995 WITH GST INDIAN-BIS",
-      "131268",
-      "131474",
-      "132156",
-      "130959"
+      "130786",
+      "130992",
+      "131769",
+      "130588"
     ],
     [
       "2617",
       "GOLD 999 IMP (LBMA) WITH GST",
       "-",
-      "132039",
-      "132772",
-      "131575"
+      "131608",
+      "132385",
+      "131203"
     ]
   ],
   "https://bcast.sridhikshaabullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/sridhikshaa": [
     [
       "4446",
       "GOLD FUTURES.",
-      "130301",
-      "130332",
-      "130955",
-      "130109"
+      "129756",
+      "129787",
+      "130799",
+      "129454"
     ],
     [
       "4380",
       "GOLD $",
-      "4198.45",
-      "4199.05",
-      "4229.50",
-      "4183.85",
-      "1-12"
+      "4198.55",
+      "4199.00",
+      "4217.30",
+      "4175.80",
+      "12-12"
     ],
     [
       "4379",
       "SILVER FUTURE",
-      "182227",
-      "182275",
-      "184727",
-      "180990",
-      "1-12"
+      "179722",
+      "179766",
+      "182887",
+      "177289",
+      "12-12"
     ],
     [
       "4387",
       "USDINR",
-      "90.18",
-      "90.23",
-      "90.30",
-      "89.93",
-      "1-12"
+      "89.86",
+      "89.91",
+      "90.42",
+      "89.84",
+      "12-12"
     ],
     [
       "4447",
       "SILVER $",
-      "58.06",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.53",
+      "57.57",
+      "58.74",
+      "56.59"
     ],
     [
       "4434",
-      "GOLD BAR CBE 3RD DECEMBER T+0",
+      "GOLD BAR CBE 5TH DECEMBER T+0",
       "-",
-      "13225.50",
-      "13300.00",
-      "13180.50",
-      "3-12"
+      "13163.00",
+      "13191.00",
+      "13135.00",
+      "5-12"
     ],
     [
-      "4410",
-      "GOLD  FT CBE 3RD DECEMBER T+0",
+      "4433",
+      "GOLD BAR CBE 8TH DECEMBER  T+0",
       "-",
-      "13220.50",
-      "13295.00",
-      "13175.00",
-      "3-12"
-    ],
-    [
-      "4432",
-      "GOLD BAR CBE 4TH DECEMBER T+0",
-      "-",
-      "13230.50",
-      "13305.00",
-      "13185.50",
-      "4-12"
+      "13168.00",
+      "13255.00",
+      "13140.00",
+      "8-12"
     ],
     [
       "4394",
       "GOLD BAR CBE - UNFIX",
       "-",
-      "13227.50",
-      "13302.00",
-      "13182.50"
+      "13168.00",
+      "13255.00",
+      "13140.00"
     ]
   ],
   "https://bcast.slnbullion.com/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/sln": [
     [
       "137",
       "Gold($).",
-      "4198.45",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4198.55",
+      "4199.00",
+      "4216.75",
+      "4175.26"
     ],
     [
       "138",
       "Silver($)",
-      "58.06",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.53",
+      "57.57",
+      "58.74",
+      "56.59"
     ],
     [
       "139",
       "INR(₹)",
-      "90.182",
-      "90.232",
-      "90.295",
-      "89.929"
+      "89.862",
+      "89.912",
+      "90.423",
+      "89.839"
     ],
     [
       "141",
       "India Gold",
-      "130301",
-      "130332",
-      "130955",
-      "130109"
+      "129756",
+      "129787",
+      "130799",
+      "129454"
     ],
     [
       "1632",
       "India Silver",
-      "182227",
-      "182275",
-      "184727",
-      "180990"
+      "179722",
+      "179766",
+      "182887",
+      "177289"
     ],
     [
       "181",
       "GOLD CHE IMP(999)",
       "-",
-      "13238.20",
-      "13295.70",
-      "13179.50",
+      "13183.70",
+      "13258.10",
+      "13151.40",
       "kundan"
     ],
     [
       "111",
       "GOLD VJA IMP  (999)",
       "-",
-      "13240.20",
-      "13297.70",
-      "13181.50",
+      "13185.70",
+      "13260.10",
+      "13153.40",
       "kundan"
     ],
     [
       "185",
       "GOLD CBE (9999)",
       "-",
-      "13258.20",
-      "13315.70",
-      "13199.50",
+      "13203.70",
+      "13278.10",
+      "13171.40",
       "kundan"
     ],
     [
       "186",
       "SILVER CHENNAI",
       "-",
-      "183575",
-      "186003",
-      "182291",
+      "180866",
+      "184188",
+      "178678",
       "kundan"
     ]
   ],
@@ -5960,412 +5380,688 @@
     [
       "4206",
       "SILVER ($)",
-      "58.07",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.58",
+      "57.58",
+      "58.74",
+      "56.59"
     ],
     [
       "4205",
       "GOLD ($)",
-      "4199.05",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4199.00",
+      "4199.00",
+      "4216.75",
+      "4175.26"
     ],
     [
       "4207",
       "INR (₹)",
-      "90.232",
-      "90.232",
-      "90.295",
-      "89.929"
+      "89.912",
+      "89.912",
+      "90.423",
+      "89.839"
     ],
     [
       "4209",
       "GOLD",
-      "130301",
-      "130332",
-      "130955",
-      "130109"
+      "129766",
+      "129790",
+      "130799",
+      "129454"
     ],
     [
       "4325",
       "SILVER",
-      "182227",
-      "182275",
-      "184727",
-      "180990"
+      "179722",
+      "179766",
+      "182887",
+      "177289"
     ],
     [
       "4519",
-      "SILVER IMP 3-5 DEC (ALL) 30 KG",
-      "183775",
-      "183775",
-      "186403",
-      "182491"
+      "SILVER IMP 4-5 DEC (ALL) 30 KG",
+      "181266",
+      "181266",
+      "184388",
+      "178878"
     ],
     [
       "4467",
-      "SILVER IMP 3-5 DEC (ALL)",
-      "184075",
-      "184075",
-      "186903",
-      "182791"
+      "SILVER IMP 4-5 DEC (ALL)",
+      "181566",
+      "181566",
+      "184688",
+      "179178"
     ],
     [
       "4502",
-      "GOLD 999 IMP 3-5 DEC (ALL)",
-      "13238.2",
-      "13238.2",
-      "13305.7",
-      "13189.5"
+      "GOLD 999 IMP 4-5 DEC (ALL)",
+      "13189.0",
+      "13189.0",
+      "13258.1",
+      "13156.4"
     ],
     [
       "4522",
-      "GOLD 999 IMP 1KG Bar 3-4 DEC (ALL)",
-      "13228.2",
-      "13228.2",
-      "13300.7",
-      "13184.5"
+      "GOLD 999 IMP 1KG Bar 4-5 DEC (ALL)",
+      "13174.0",
+      "13174.0",
+      "13248.1",
+      "13141.4"
+    ],
+    [
+      "4490",
+      "GOLD 999 IND BIS 5th DEC (MUM)",
+      "13159.0",
+      "13159.0",
+      "13327.0",
+      "13126.4"
     ]
   ],
   "https://bcast.smsbullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/smsbullion": [
     [
       "3124",
       "GOLD",
-      "201.00",
+      "200.00",
+      "12550.00",
       "12590.00",
-      "12590.00",
-      "12570.00"
+      "12550.00"
     ],
     [
       "3125",
       "SILVER",
-      "201.00",
+      "200.00",
+      "11997.00",
       "12037.00",
-      "12037.00",
-      "12017.00"
+      "11997.00"
     ],
     [
       "3097",
       "GOLD ($)",
-      "4199.05",
-      "4199.05",
-      "4229.50",
-      "4183.85"
+      "4199.00",
+      "4199.00",
+      "4217.30",
+      "4175.80"
     ],
     [
       "3099",
       "SILVER ($)",
-      "58.06",
-      "58.07",
-      "58.97",
-      "57.57"
+      "57.55",
+      "57.58",
+      "58.77",
+      "56.65"
     ],
     [
       "3101",
       "INR($)",
-      "90.182",
-      "90.232",
-      "90.345",
-      "89.973"
+      "89.862",
+      "89.912",
+      "90.450",
+      "89.878"
     ],
     [
       "3103",
       "INDIA GOLD",
-      "130301",
-      "130332",
-      "130907",
-      "129745"
+      "129766",
+      "129790",
+      "130531",
+      "129464"
     ],
     [
       "3107",
       "INDIA SILVER",
-      "182227",
-      "182275",
-      "184703",
-      "180991"
+      "179722",
+      "179766",
+      "182888",
+      "177378"
     ],
     [
       "3127",
       "SMS FINE GOLD 999 - chennai (T+1)",
-      "13248.20",
-      "13248.20",
-      "13305.70",
-      "13189.50"
+      "13184.00",
+      "13184.00",
+      "13268.10",
+      "13151.40"
     ],
     [
       "3109",
       "IMP GOLD 999-chennai",
-      "13033.20",
-      "13258.20",
-      "13315.70",
-      "13199.50"
+      "12979.00",
+      "13194.00",
+      "13278.10",
+      "13161.40"
     ],
     [
       "3131",
       "GOLD 999 -vijaywada",
-      "13258.20",
-      "13258.20",
-      "13315.70",
-      "13199.50"
+      "13194.00",
+      "13194.00",
+      "13278.10",
+      "13161.40"
     ],
     [
       "3130",
       "9999 GOLD- coimbatore",
-      "13264.20",
-      "13264.20",
-      "13321.70",
-      "13205.50"
+      "13200.00",
+      "13200.00",
+      "13284.10",
+      "13167.40"
     ]
   ],
   "https://bcast.kjbullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kjbullion": [
     [
       "4069",
       "Gold",
-      "4199.05",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4199.00",
+      "4199.00",
+      "4216.75",
+      "4175.26"
     ],
     [
       "4070",
       "Silver",
-      "58.07",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.58",
+      "57.58",
+      "58.74",
+      "56.59"
     ],
     [
       "4071",
       "INR",
-      "90.232",
-      "90.232",
-      "90.295",
-      "89.929"
+      "89.912",
+      "89.912",
+      "90.423",
+      "89.839"
     ],
     [
       "4072",
       "Gold Current",
-      "130301",
-      "130332",
-      "130955",
-      "130109"
+      "129766",
+      "129790",
+      "130799",
+      "129454"
     ],
     [
       "4073",
       "Silver Current",
-      "182227",
-      "182275",
-      "184727",
-      "180990"
+      "179722",
+      "179766",
+      "182887",
+      "177289"
     ],
     [
       "4121",
       "GOLD 100Gms 999 (Chennai)(T+0)",
-      "13233.20",
-      "13233.20",
-      "13295.70",
-      "13179.50"
+      "13169.00",
+      "13169.00",
+      "13253.10",
+      "13136.40"
     ],
     [
       "4152",
       "GOLD 100Gms 999 (Coimbatore)(T+0)",
-      "13233.20",
-      "13233.20",
-      "13295.70",
-      "13179.50"
+      "13169.00",
+      "13169.00",
+      "13253.10",
+      "13136.40"
     ],
     [
       "4142",
       "Gold 100Gms 999 (Bangalore)(T+0)",
-      "13233.20",
-      "13233.20",
-      "13295.70",
-      "13179.50"
+      "13169.00",
+      "13169.00",
+      "13253.10",
+      "13136.40"
     ],
     [
       "4180",
       "GOLD 100Gms 999 (Hyderabad)(T+0)",
-      "13233.20",
-      "13233.20",
-      "13295.70",
-      "13179.50"
+      "13169.00",
+      "13169.00",
+      "13253.10",
+      "13136.40"
     ],
     [
       "4145",
       "GOLD 100Gms 999 (Mumbai)(T+0)",
-      "13233.20",
-      "13233.20",
-      "13295.70",
-      "13179.50"
+      "13169.00",
+      "13169.00",
+      "13253.10",
+      "13136.40"
     ]
   ],
   "https://bcast.ashtasiddhi.co.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/ashtasiddhi": [
     [
       "5108",
       "GOLD",
-      "4198.45",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4198.55",
+      "4199.00",
+      "4216.75",
+      "4175.26"
     ],
     [
       "5110",
       "INR",
-      "90.182",
-      "90.232",
-      "90.295",
-      "89.929"
+      "89.862",
+      "89.912",
+      "90.423",
+      "89.839"
     ],
     [
       "5111",
       "GOLD COSTING",
-      "130332",
-      "130332",
-      "130955",
-      "130109"
+      "129790",
+      "129790",
+      "130799",
+      "129454"
     ],
     [
       "5782",
       "GOLD 995 (T+0)",
-      "127492",
-      "127692",
-      "128341",
-      "127080"
+      "126980",
+      "127180",
+      "127931",
+      "126784"
+    ],
+    [
+      "5114",
+      "SILVER IMPORTED 30KG  (T+0)",
+      "175200",
+      "175700",
+      "175878",
+      "174072"
     ],
     [
       "5667",
-      "GOLD 995 (4th DEC)",
+      "GOLD 995 (5th DEC)",
       "-",
-      "127792",
-      "128357",
-      "127195"
+      "127280",
+      "128031",
+      "126884"
     ],
     [
       "5115",
       "GOLD 995 (WITH GST)",
       "-",
-      "131523",
-      "132191",
-      "130892"
+      "130995",
+      "131769",
+      "130588"
     ]
   ],
   "https://bcast.navkargold.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/navkar": [
     [
       "9052",
       "GOLD.",
-      "4199.05",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4199.75",
+      "4199.75",
+      "4216.75",
+      "4175.26"
     ],
     [
       "7540",
       "SILVER",
-      "58.07",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.58",
+      "57.58",
+      "58.74",
+      "56.59"
     ],
     [
       "7541",
       "INR",
-      "90.232",
-      "90.232",
-      "90.305",
-      "90.095"
+      "89.912",
+      "89.912",
+      "90.450",
+      "89.878"
     ],
     [
       "9054",
       "GOLD COSTING",
-      "130301",
-      "130332",
-      "130624",
-      "130127"
+      "129766",
+      "129790",
+      "130531",
+      "129464"
     ],
     [
       "7543",
       "SILVER COSTING",
-      "182226",
-      "182265",
-      "182675",
-      "181732"
+      "179767",
+      "179800",
+      "182888",
+      "177378"
     ],
     [
       "9300",
       "GOLD 999 IMP T+2",
-      "132436",
-      "132436",
-      "132727",
-      "132214"
+      "131939",
+      "131939",
+      "132615",
+      "131613"
     ],
     [
       "7594",
       "GOLD 999 IMP (TODAY)",
-      "132386",
-      "132386",
-      "132677",
-      "132165"
+      "131889",
+      "131889",
+      "132566",
+      "131564"
     ]
   ],
   "http://bcast.manibhadrabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/manibhadra": [
     [
       "5322",
       "GOLD",
-      "4198.45",
-      "4199.05",
-      "4228.88",
-      "4194.33"
+      "4198.85",
+      "4199.75",
+      "4216.75",
+      "4175.26"
     ],
     [
       "5323",
       "SILVER",
-      "58.06",
-      "58.07",
-      "58.94",
-      "57.51"
+      "57.55",
+      "57.58",
+      "58.74",
+      "56.59"
     ],
     [
       "5324",
       "INR",
-      "90.182",
-      "90.232",
-      "90.295",
-      "89.929"
+      "89.862",
+      "89.912",
+      "90.423",
+      "89.839"
     ],
     [
       "5325",
       "GOLD FUTURE",
-      "130301",
-      "130332",
-      "130907",
-      "129745"
+      "129766",
+      "129790",
+      "130531",
+      "129464"
     ],
     [
       "5326",
       "SILVER FUTURE",
-      "182226",
-      "182265",
-      "184703",
-      "180991"
+      "179767",
+      "179800",
+      "182888",
+      "177378"
     ],
     [
       "6320",
       "GOLD 999 IMP RTGS  T+2",
       "-",
-      "132419",
-      "133063",
-      "131866"
+      "131871",
+      "132624",
+      "131535"
     ],
     [
       "5327",
       "GOLD 999 IMP RTGS(TODAY)",
       "-",
-      "132378",
-      "133021",
-      "131825"
+      "131830",
+      "132583",
+      "131494"
     ]
-  ]
+  ],
+  "https://www.arihantspot.in": {
+    "records": [
+      {
+        "Name": "GOLD 995 (1kg) INDIAN-BIS T+0",
+        "Buy": 995,
+        "Sell": 1.0,
+        "Low": 126972.0,
+        "High": 0.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 126784,
+        "Sell": 126784.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127172",
+        "Buy": 127172,
+        "Sell": 127172.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 127931,
+        "Sell": 127931.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 999 IMPORTED (LBMA)(1KG) T+0",
+        "Buy": 999,
+        "Sell": null,
+        "Low": 1.0,
+        "High": 0.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 127384,
+        "Sell": 127384.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127772",
+        "Buy": 127772,
+        "Sell": 127772.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 128531,
+        "Sell": 128531.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 995 (500gm) T+0",
+        "Buy": 995,
+        "Sell": null,
+        "Low": 500.0,
+        "High": 0.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 126784,
+        "Sell": 126784.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127172",
+        "Buy": 127172,
+        "Sell": 127172.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 127931,
+        "Sell": 127931.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 995 (1KG) INDIAN BIS 5th DEC",
+        "Buy": 995,
+        "Sell": 1.0,
+        "Low": 127022.0,
+        "High": 5.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 126884,
+        "Sell": 126884.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127272",
+        "Buy": 127272,
+        "Sell": 127272.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 128031,
+        "Sell": 128031.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 999 IMPORTED (1kg)(LBMA) 5th DEC",
+        "Buy": 999,
+        "Sell": null,
+        "Low": 1.0,
+        "High": 5.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 127484,
+        "Sell": 127484.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127872",
+        "Buy": 127872,
+        "Sell": 127872.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 128631,
+        "Sell": 128631.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 995 (500gm) 5th DEC",
+        "Buy": 995,
+        "Sell": null,
+        "Low": 500.0,
+        "High": 5.0,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 126884,
+        "Sell": 126884.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "127272",
+        "Buy": 127272,
+        "Sell": 127272.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 128031,
+        "Sell": 128031.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 995 WITH GST INDIAN-BIS",
+        "Buy": 995,
+        "Sell": 130781.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 130588,
+        "Sell": 130588.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "130987",
+        "Buy": 130987,
+        "Sell": 130987.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 131769,
+        "Sell": 131769.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "GOLD 999 IMP (LBMA) WITH GST",
+        "Buy": 999,
+        "Sell": 999.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "L :",
+        "Buy": 131203,
+        "Sell": 131203.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "131603",
+        "Buy": 131603,
+        "Sell": 131603.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      },
+      {
+        "Name": "H :",
+        "Buy": 132385,
+        "Sell": 132385.0,
+        "Low": null,
+        "High": null,
+        "Time": "17:27:58"
+      }
+    ]
+  }
 }
