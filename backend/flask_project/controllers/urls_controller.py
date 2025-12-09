@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify, request
 from bson.objectid import ObjectId
 from datetime import datetime
 from bson import ObjectId
-from Services.json_manager import add_domain_if_missing,update_domain,delete_domain
+from Services.json_manager import add_domain,update_domain,delete_domain,update_records
 
 urls_bp = Blueprint("urls", __name__)  
 
@@ -36,15 +36,32 @@ def get_url(url_id):
 @urls_bp.route("/<url_id>", methods=["DELETE"])
 @token_required
 def delete_url(url_id):
+    from bson import ObjectId
+
+    # Validate ObjectId
     try:
-        result = urls_collection.delete_one({"_id": ObjectId(url_id)})
+        object_id = ObjectId(url_id)
     except:
         return jsonify({"message": "Invalid URL ID"}), 400
 
+    # Delete from MongoDB
+    result = urls_collection.delete_one({"_id": object_id})
+
     if result.deleted_count == 0:
         return jsonify({"message": "URL not found"}), 404
-    delete_domain(url_id)
-    return jsonify({"message": "URL deleted successfully"}), 200
+
+    # Delete from JSON
+    json_deleted = delete_domain(url_id)
+
+    # Refresh JSON cached records if needed
+    update_records()
+    
+
+    return jsonify({
+        "message": "URL deleted successfully",
+        "json_deleted": json_deleted
+    }), 200
+
 
 @urls_bp.route("/", methods=["POST"])
 @token_required
@@ -97,7 +114,7 @@ def create_url():
     # ----------------------------------------
     # 4️⃣ Add to JSON
     # ----------------------------------------
-    add_domain_if_missing(data)
+    add_domain(data)
     return jsonify({
         "status": "success",
         "message": "New URL created successfully",
@@ -129,6 +146,8 @@ def update_url(url_id):
     # Update JSON (single unified function)
     
     update_domain(updated)
+        
+    print("✅ Domain updated in JSON")
 
     return jsonify(updated), 200
 

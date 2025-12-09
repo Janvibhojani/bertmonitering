@@ -4,7 +4,7 @@ import json
 from socket_instance import sio
 from Services.json_emit_service import emit_user_update
 
-JSON_FILE = "assigned_strings.json"
+JSON_FILE = "scrape_domain.json"
 
 def update_user_strings(user_id, new_strings):
     print("✅ update_user_strings CALLED for user:", user_id)

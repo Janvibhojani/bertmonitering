@@ -8,7 +8,7 @@ import socketio
 from socket_instance import sio  # Import the shared Socket.IO instance
 from sockets.combine_socket import *  # Import socket event 
 from Services.scraper_service import run_scraper, stop_scraper
-from Services.json_manager import ensure_json_file, add_domain_if_missing
+from Services.json_manager import ensure_json_file, add_domain
 from Services.url_Service import fetch_all_urls_from_db
 
 # Controller blueprints
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     
     urls = fetch_all_urls_from_db()
     for u in urls:
-        add_domain_if_missing(u)
+        add_domain(u)
       # Start scraper thread
     t = threading.Thread(target=start_scraper_background)
     t.daemon = True

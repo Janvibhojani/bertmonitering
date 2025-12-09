@@ -5,7 +5,7 @@ import threading
 import logging
 import os
 
-JSON_FILE = "assigned_strings.json"
+JSON_FILE =  "scrape_domain.json"
 
 if not os.path.exists(JSON_FILE):
     with open(JSON_FILE, "w") as f:
