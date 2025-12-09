@@ -1,12 +1,13 @@
 # controllers/urls_controller.py
-from db.mongo import urls_collection, users_collection
+from db.mongo import urls_collection
 from middleware.auth_middleware import token_required
 from models import User
+
 from flask import Blueprint, jsonify, request
 from bson.objectid import ObjectId
 from datetime import datetime
 from bson import ObjectId
-from Services.json_manager import add_domain_if_missing
+from Services.json_manager import add_domain_if_missing,update_domain,delete_domain
 
 urls_bp = Blueprint("urls", __name__)  
 
@@ -42,6 +43,7 @@ def delete_url(url_id):
 
     if result.deleted_count == 0:
         return jsonify({"message": "URL not found"}), 404
+    delete_domain(url_id)
     return jsonify({"message": "URL deleted successfully"}), 200
 
 @urls_bp.route("/", methods=["POST"])
@@ -49,11 +51,37 @@ def delete_url(url_id):
 def create_url():
     data = request.get_json() or {}
 
-    # ✅ Add timestamp fields
+    new_domain = data.get("url")
+    if not new_domain:
+        return jsonify({"error": "URL is required"}), 400
+
+    # ----------------------------------------
+    # 1️⃣ Extract base domain
+    # ----------------------------------------
+    from urllib.parse import urlparse
+
+    parsed = urlparse(new_domain)
+    base_domain = f"{parsed.scheme}://{parsed.netloc}"
+    data["url"] = base_domain   
+    # ----------------------------------------
+    # 2️⃣ CHECK IF DOMAIN ALREADY EXISTS
+    # ----------------------------------------
+    existing = urls_collection.find_one({"url": base_domain})
+
+    if existing:
+        return jsonify({
+            "status": "error",
+            "message": "Url is  already exists",
+            "existing_id": str(existing["_id"]),
+            "existing_domain": existing["url"]
+        }), 409
+
+    # ----------------------------------------
+    # 3️⃣ Insert new URL
+    # ----------------------------------------
     data["created_at"] = datetime.utcnow()
     data["updated_at"] = datetime.utcnow()
 
-    # ✅ Same logic as your FastAPI version
     if data.get("target"):
         data["scrap_from"] = "HTML"
         data["only_on_change"] = False
@@ -63,65 +91,136 @@ def create_url():
         data.pop("target", None)
         data.pop("mode", None)
 
-    # ✅ Insert into MongoDB
     result = urls_collection.insert_one(data)
     data["_id"] = str(result.inserted_id)
+
+    # ----------------------------------------
+    # 4️⃣ Add to JSON
+    # ----------------------------------------
     add_domain_if_missing(data)
-    return jsonify(data), 201
+    return jsonify({
+        "status": "success",
+        "message": "New URL created successfully",
+        "data": data
+    }), 201
 
 @urls_bp.route("/<url_id>", methods=["PUT"])
 @token_required
 def update_url(url_id):
-    data = request.get_json()
-    data["updated_at"] = datetime.utcnow()
+    incoming = request.get_json() or {}
+    incoming["updated_at"] = datetime.utcnow()
 
+    # Fetch existing record
     try:
-        result = urls_collection.update_one(
-            {"_id": ObjectId(url_id)},
-            {"$set": data}
-        )
+        old_data = urls_collection.find_one({"_id": ObjectId(url_id)})
     except:
         return jsonify({"message": "Invalid URL ID"}), 400
 
-    if result.matched_count == 0:
+    if not old_data:
         return jsonify({"message": "URL not found"}), 404
 
-    updated_url = urls_collection.find_one({"_id": ObjectId(url_id)})
-    updated_url["_id"] = str(updated_url["_id"])  # Convert ObjectId to string
+    # Update DB
+    urls_collection.update_one({"_id": ObjectId(url_id)}, {"$set": incoming})
 
-    return jsonify(updated_url), 200
+    # Fetch updated record
+    updated = urls_collection.find_one({"_id": ObjectId(url_id)})
+    updated["_id"] = str(updated["_id"])
+
+    # Update JSON (single unified function)
+    
+    update_domain(updated)
+
+    return jsonify(updated), 200
+
+# @urls_bp.route("/<url_id>", methods=["PUT"])
+# @token_required
+# def update_url(url_id):
+#     incoming = request.get_json() or {}
+#     incoming["updated_at"] = datetime.utcnow()
+
+#     # Fetch existing record first
+#     try:
+#         old_data = urls_collection.find_one({"_id": ObjectId(url_id)})
+#     except:
+#         return jsonify({"message": "Invalid URL ID"}), 400
+
+#     if not old_data:
+#         return jsonify({"message": "URL not found"}), 404
+
+#     # Merge old + new fields
+#     final_data = {**old_data, **incoming}
+#     final_data["_id"] = old_data["_id"]  # Keep ObjectId
+
+#     # Update DB
+#     urls_collection.update_one({"_id": ObjectId(url_id)}, {"$set": incoming})
+
+#     # Fetch updated
+#     updated_url = urls_collection.find_one({"_id": ObjectId(url_id)})
+#     updated_url["_id"] = str(updated_url["_id"])  # convert to str for JSON
+
+#     # Update JSON properly via name-keyed structure
+#     update_domain(updated_url)
+
+#     return jsonify(updated_url), 200
 
 
-def fetch_all_urls_from_db():
-    urls = []
-    for url_data in urls_collection.find():
-        url_data["_id"] = str(url_data["_id"])
-        # ✅ Convert datetime fields to ISO strings
-        for key, value in url_data.items():
-            if isinstance(value, datetime):
-                url_data[key] = value.isoformat()
-        urls.append(url_data)
-    return urls
 
-def fetch_user_allocated_urls(user_id):
-    try:
-        user = users_collection.find_one({"_id": ObjectId(user_id)})
+# def fetch_all_urls_from_db():
+#     urls = []
+#     for url_data in urls_collection.find():
+#         url_data["_id"] = str(url_data["_id"])
+#         # ✅ Convert datetime fields to ISO strings
+#         for key, value in url_data.items():
+#             if isinstance(value, datetime):
+#                 url_data[key] = value.isoformat()
+#         urls.append(url_data)
+#     return urls
 
-        if not user:
-            return []
+# def fetch_user_allocated_urls(user_id):
+#     try:
+#         user = users_collection.find_one({"_id": ObjectId(user_id)})
 
-        urls = user.get("urls", [])
+#         if not user:
+#             return []
 
-        formatted = []
-        for u in urls:
-            if isinstance(u, str):
-                formatted.append({"url": u})  # wrap strings as dicts
-            elif isinstance(u, dict) and "url" in u:
-                formatted.append(u)
-        return formatted
+#         urls = user.get("urls", [])
 
-    except Exception as e:
-        return []
+#         formatted = []
+#         for u in urls:
+#             if isinstance(u, str):
+#                 formatted.append({"url": u})  # wrap strings as dicts
+#             elif isinstance(u, dict) and "url" in u:
+#                 formatted.append(u)
+#         return formatted
+
+#     except Exception as e:
+#         return []
+
+
+
+# @urls_bp.route("/<url_id>", methods=["PUT"])
+# @token_required
+# def update_url(url_id):
+#     data = request.get_json()
+#     data["updated_at"] = datetime.utcnow()
+
+#     try:
+#         result = urls_collection.update_one(
+#             {"_id": ObjectId(url_id)},
+#             {"$set": data}
+#         )
+#     except:
+#         return jsonify({"message": "Invalid URL ID"}), 400
+
+#     if result.matched_count == 0:
+#         return jsonify({"message": "URL not found"}), 404
+
+#     updated_url = urls_collection.find_one({"_id": ObjectId(url_id)})
+#     updated_url["_id"] = str(updated_url["_id"])  # Convert ObjectId to string
+
+#     return jsonify(updated_url), 200
+
+
 
 # def fetch_user_allocated_urls(user_id):
 #     try:

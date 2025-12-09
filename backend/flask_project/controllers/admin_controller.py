@@ -123,6 +123,7 @@ def update_user(user_id):
     user.urls = data.get("urls", user.urls)
     user.start_date = data.get("start_date", user.start_date)
     user.end_date = data.get("end_date", user.end_date)
+    user.is_active = data.get("is_active", user.is_active)
 
     # if "password" in data:
     #     user.password = generate_password_hash(data["password"])

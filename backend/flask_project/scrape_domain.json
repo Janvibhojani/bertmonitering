@@ -1,0 +1,955 @@
+{
+    "SLN BULLION PVT": {
+        "domain": "https://slnbullion.com/",
+        "url_id": "68ea2bc1229d6d13b2ab8cc8",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "AMS BULLION": {
+        "domain": "https://amsbullion.com/",
+        "url_id": "68ea2bf1229d6d13b2ab8cca",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "SMS BULLION": {
+        "domain": "https://smsbullion.com/",
+        "url_id": "68ea2c08229d6d13b2ab8ccb",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "KJ BULLION": {
+        "domain": "https://kjbullion.com/",
+        "url_id": "68ea2c1d229d6d13b2ab8ccc",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "ASHTASIDDHI BULLION": {
+        "domain": "https://ashtasiddhi.co.in/",
+        "url_id": "68ea2c31229d6d13b2ab8ccd",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "AUGMONT SPOT ": {
+        "domain": "https://spot.augmont.com/liverates",
+        "url_id": "68ea2c4e229d6d13b2ab8cce",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "ARIHANT (API)": {
+        "domain": "https://bcast.arihantspot.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/arihant",
+        "url_id": "690a7c2ba6db0dc561cf53d8",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "2580",
+                "Gold",
+                "4178.10",
+                "4178.10",
+                "4199.35",
+                "4170.95"
+            ],
+            [
+                "2581",
+                "USD INR",
+                "90.005",
+                "90.005",
+                "90.140",
+                "89.887"
+            ],
+            [
+                "2582",
+                "GOLD COST",
+                "129340",
+                "129340",
+                "130177",
+                "129114"
+            ],
+            [
+                "2736",
+                "GOLD 995 (1kg) INDIAN-BIS T+0",
+                "126690",
+                "126890",
+                "127677",
+                "126652"
+            ],
+            [
+                "2730",
+                "GOLD 999 INDIAN-BIS(100GM) T+0",
+                "-",
+                "127490",
+                "128277",
+                "127252"
+            ],
+            [
+                "2673",
+                "GOLD 995 (500gm) T+0",
+                "-",
+                "126890",
+                "127677",
+                "126652"
+            ],
+            [
+                "2746",
+                "GOLD 99.99 IMPORTED (1kg)(LBMA) T+0",
+                "-",
+                "127940",
+                "128777",
+                "127702"
+            ],
+            [
+                "2709",
+                "GOLD 99.99 IMPORTED (LBMA)(1KG) 10th DEC",
+                "-",
+                "127940",
+                "128777",
+                "127702"
+            ],
+            [
+                "2713",
+                "GOLD 995 (1KG) INDIAN BIS 10th DEC",
+                "126740",
+                "126940",
+                "127208",
+                "126702"
+            ],
+            [
+                "2711",
+                "GOLD 995 (500gm) 10th DEC",
+                "-",
+                "126940",
+                "127208",
+                "126702"
+            ],
+            [
+                "2688",
+                "GOLD 995 WITH GST INDIAN-BIS",
+                "130491",
+                "130697",
+                "131507",
+                "130452"
+            ],
+            [
+                "2617",
+                "GOLD 999 IMP (LBMA) WITH GST",
+                "-",
+                "131313",
+                "132123",
+                "131068"
+            ]
+        ]
+    },
+    "NAVKAR GOLD": {
+        "domain": "https://navkargold.com/",
+        "url_id": "690c505a5fed81c8add254a0",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "ARYA BULLION": {
+        "domain": "http://www.aryabullion.com/",
+        "url_id": "690c61a7da1fee3432fc17a8",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "KUBERAN BULLION": {
+        "domain": "http://www.kuberanbullion.com/",
+        "url_id": "690c6256da1fee3432fc17a9",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "MANIBHADRA BULLION": {
+        "domain": "http://www.manibhadrabullion.com/",
+        "url_id": "690c6333da1fee3432fc17aa",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "SRIDHIKSHAA BULLION (API)": {
+        "domain": "https://bcast.sridhikshaabullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/sridhikshaa",
+        "url_id": "690c6406da1fee3432fc17ac",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "4446",
+                "GOLD FUTURES.",
+                "129327",
+                "129340",
+                "130158",
+                "129101"
+            ],
+            [
+                "4380",
+                "GOLD $",
+                "4177.60",
+                "4178.10",
+                "4199.35",
+                "4170.95",
+                "12-12"
+            ],
+            [
+                "4379",
+                "SILVER FUTURE",
+                "181083",
+                "181135",
+                "183000",
+                "180100",
+                "12-12"
+            ],
+            [
+                "4387",
+                "USDINR",
+                "89.99",
+                "90.00",
+                "90.14",
+                "89.89",
+                "12-12"
+            ],
+            [
+                "4447",
+                "SILVER $",
+                "57.89",
+                "57.93",
+                "58.42",
+                "57.59"
+            ],
+            [
+                "4434",
+                "GOLD BAR CBE 10TH DECEMBER T+0",
+                "-",
+                "13140.00",
+                "13230.50",
+                "13121.00",
+                "10-12"
+            ],
+            [
+                "4433",
+                "GOLD BAR CBE 11TH DECEMBER  T+0",
+                "-",
+                "13140.00",
+                "13146.00",
+                "13123.00",
+                "11-12"
+            ],
+            [
+                "4394",
+                "GOLD BAR CBE - UNFIX",
+                "-",
+                "13145.50",
+                "13230.50",
+                "13121.00"
+            ]
+        ]
+    },
+    "KB JEWELLERS": {
+        "domain": "http://18.171.239.49:1003/",
+        "url_id": "691195560e327d05e1687535",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "OM JEWELLERS": {
+        "domain": "http://18.171.239.49:1005/",
+        "url_id": "691195d00e327d05e1687536",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "AMBIKA JEWELLERS": {
+        "domain": "http://ambikajewellers.co.in/",
+        "url_id": "6911967d0e327d05e1687537",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "NAMAMI SPOT": {
+        "domain": "http://namamispot.in/",
+        "url_id": "6911aa61ce50af4a9522f9af",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "NJB BULLION": {
+        "domain": "http://njbbullion.in/",
+        "url_id": "6911ab68ce50af4a9522f9b1",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    },
+    "SLN BULLION (API)": {
+        "domain": "https://bcast.slnbullion.com/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/sln",
+        "url_id": "6911b650b044baf3a431da23",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "137",
+                "Gold($).",
+                "4177.70",
+                "4178.50",
+                "4198.73",
+                "4169.99"
+            ],
+            [
+                "138",
+                "Silver($)",
+                "57.91",
+                "57.96",
+                "58.42",
+                "57.59"
+            ],
+            [
+                "139",
+                "INR(\u20b9)",
+                "89.990",
+                "89.995",
+                "90.140",
+                "89.887"
+            ],
+            [
+                "141",
+                "India Gold",
+                "129327",
+                "129340",
+                "130158",
+                "129101"
+            ],
+            [
+                "1632",
+                "India Silver",
+                "181083",
+                "181135",
+                "183000",
+                "180100"
+            ],
+            [
+                "181",
+                "GOLD CHE IMP(999)",
+                "-",
+                "13154.00",
+                "13226.70",
+                "13131.40",
+                "kundan"
+            ],
+            [
+                "111",
+                "GOLD VJA IMP  (999)",
+                "-",
+                "13156.00",
+                "13228.70",
+                "13133.40",
+                "kundan"
+            ],
+            [
+                "185",
+                "GOLD CBE (9999)",
+                "-",
+                "13174.00",
+                "13246.70",
+                "13151.40",
+                "kundan"
+            ],
+            [
+                "186",
+                "SILVER CHENNAI",
+                "-",
+                "182235",
+                "184045",
+                "181205",
+                "kundan"
+            ]
+        ]
+    },
+    "AMS BULLION (API)": {
+        "domain": "https://adminapi.amsbullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/amsbullion",
+        "url_id": "6911b67cb044baf3a431da24",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "4206",
+                "SILVER ($)",
+                "57.96",
+                "57.96",
+                "58.42",
+                "57.59"
+            ],
+            [
+                "4205",
+                "GOLD ($)",
+                "4178.50",
+                "4178.50",
+                "4198.73",
+                "4169.99"
+            ],
+            [
+                "4207",
+                "INR (\u20b9)",
+                "89.995",
+                "89.995",
+                "90.140",
+                "89.887"
+            ],
+            [
+                "4209",
+                "GOLD",
+                "129327",
+                "129340",
+                "130158",
+                "129101"
+            ],
+            [
+                "4325",
+                "SILVER",
+                "181168",
+                "181215",
+                "183000",
+                "180100"
+            ],
+            [
+                "4519",
+                "SILVER IMP 9-10 DEC (ALL) 30 KG",
+                "182815",
+                "182815",
+                "184545",
+                "181705"
+            ],
+            [
+                "4467",
+                "SILVER IMP 9-10 DEC (ALL)",
+                "183215",
+                "183215",
+                "184945",
+                "182105"
+            ],
+            [
+                "4502",
+                "GOLD 999 IMP 9-10 DEC (ALL)",
+                "13169.0",
+                "13169.0",
+                "13237.7",
+                "13146.4"
+            ],
+            [
+                "4522",
+                "GOLD 999 IMP 1KG Bar 9-10 DEC (ALL)",
+                "13154.0",
+                "13154.0",
+                "13222.7",
+                "13131.4"
+            ],
+            [
+                "4490",
+                "GOLD 999 IND BIS 9th DEC (MUM)",
+                "13134.0",
+                "13134.0",
+                "13217.7",
+                "13111.4"
+            ],
+            [
+                "4520",
+                "GOLD 999 IND BIS 9-10 DEC (ALL)",
+                "13144.0",
+                "13144.0",
+                "13222.7",
+                "13121.4"
+            ]
+        ]
+    },
+    "SMS BULLION (API)": {
+        "domain": "https://bcast.smsbullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/smsbullion",
+        "url_id": "6911b70fb044baf3a431da26",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "3124",
+                "GOLD",
+                "199.00",
+                "12530.00",
+                "20529.00",
+                "20529.00"
+            ],
+            [
+                "3125",
+                "SILVER",
+                "199.00",
+                "11977.00",
+                "19976.00",
+                "19976.00"
+            ],
+            [
+                "3097",
+                "GOLD ($)",
+                "4178.50",
+                "4178.50",
+                "4199.35",
+                "4170.95"
+            ],
+            [
+                "3099",
+                "SILVER ($)",
+                "57.91",
+                "57.96",
+                "58.45",
+                "57.63"
+            ],
+            [
+                "3101",
+                "INR($)",
+                "89.990",
+                "89.995",
+                "90.170",
+                "89.930"
+            ],
+            [
+                "3103",
+                "INDIA GOLD",
+                "129327",
+                "129340",
+                "130177",
+                "129114"
+            ],
+            [
+                "3107",
+                "INDIA SILVER",
+                "181168",
+                "181215",
+                "182945",
+                "180105"
+            ],
+            [
+                "3127",
+                "SMS FINE GOLD 999 - chennai (T+1)",
+                "13139.00",
+                "13139.00",
+                "13222.70",
+                "13116.40"
+            ],
+            [
+                "3109",
+                "IMP GOLD 999-chennai",
+                "12934.00",
+                "13149.00",
+                "13232.70",
+                "13126.40"
+            ],
+            [
+                "3131",
+                "GOLD 999 -vijaywada",
+                "13149.00",
+                "13149.00",
+                "13232.70",
+                "13126.40"
+            ],
+            [
+                "3130",
+                "9999 GOLD- coimbatore",
+                "13155.00",
+                "13155.00",
+                "13238.70",
+                "13132.40"
+            ]
+        ]
+    },
+    "KJ BULLION (API)": {
+        "domain": "https://bcast.kjbullion.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/kjbullion",
+        "url_id": "6911b7f9b044baf3a431da27",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "4069",
+                "Gold",
+                "4178.50",
+                "4178.50",
+                "4198.73",
+                "4169.99"
+            ],
+            [
+                "4070",
+                "Silver",
+                "57.96",
+                "57.96",
+                "58.42",
+                "57.59"
+            ],
+            [
+                "4071",
+                "INR",
+                "89.995",
+                "89.995",
+                "90.140",
+                "89.887"
+            ],
+            [
+                "4072",
+                "Gold Current",
+                "129327",
+                "129340",
+                "130158",
+                "129101"
+            ],
+            [
+                "4073",
+                "Silver Current",
+                "181168",
+                "181215",
+                "183000",
+                "180100"
+            ],
+            [
+                "4121",
+                "GOLD 100Gms 999 (Chennai)(T+0)",
+                "13144.00",
+                "13144.00",
+                "13222.70",
+                "13121.40"
+            ],
+            [
+                "4152",
+                "GOLD 100Gms 999 (Coimbatore)(T+0)",
+                "13144.00",
+                "13144.00",
+                "13222.70",
+                "13121.40"
+            ],
+            [
+                "4142",
+                "Gold 100Gms 999 (Bangalore)(T+0)",
+                "13144.00",
+                "13144.00",
+                "13222.70",
+                "13121.40"
+            ],
+            [
+                "4180",
+                "GOLD 100Gms 999 (Hyderabad)(T+0)",
+                "13144.00",
+                "13144.00",
+                "13222.70",
+                "13121.40"
+            ],
+            [
+                "4145",
+                "GOLD 100Gms 999 (Mumbai)(T+0)",
+                "13139.00",
+                "13139.00",
+                "13217.70",
+                "13116.40"
+            ]
+        ]
+    },
+    "ASTHASIDDHI BULLION (API)": {
+        "domain": "https://bcast.ashtasiddhi.co.in:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/ashtasiddhi",
+        "url_id": "6911b876b044baf3a431da28",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "5108",
+                "GOLD",
+                "4177.65",
+                "4178.10",
+                "4198.73",
+                "4169.99"
+            ],
+            [
+                "5110",
+                "INR",
+                "89.990",
+                "89.995",
+                "90.140",
+                "89.887"
+            ],
+            [
+                "5111",
+                "GOLD COSTING",
+                "129325",
+                "129325",
+                "130158",
+                "129101"
+            ],
+            [
+                "5782",
+                "GOLD 995 (T+0)",
+                "126675",
+                "126875",
+                "127677",
+                "126644"
+            ],
+            [
+                "5114",
+                "SILVER IMPORTED 30KG  (T+0)",
+                "-",
+                "176989",
+                "178787",
+                "175955"
+            ],
+            [
+                "5667",
+                "GOLD 995 (10th DEC)",
+                "-",
+                "126975",
+                "127777",
+                "126744"
+            ],
+            [
+                "5115",
+                "GOLD 995 (WITH GST)",
+                "-",
+                "130681",
+                "131507",
+                "130443"
+            ]
+        ]
+    },
+    "NAVKAR GOLD (API)": {
+        "domain": "https://bcast.navkargold.com:7768/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/navkar",
+        "url_id": "6911ba87b044baf3a431da29",
+        "type": "API",
+        "inner_text": "",
+        "records": [
+            [
+                "9052",
+                "GOLD.",
+                "4178.10",
+                "4178.10",
+                "4198.73",
+                "4169.99"
+            ],
+            [
+                "7540",
+                "SILVER",
+                "57.93",
+                "57.93",
+                "58.42",
+                "57.59"
+            ],
+            [
+                "7541",
+                "INR",
+                "89.995",
+                "89.995",
+                "90.170",
+                "89.930"
+            ],
+            [
+                "9054",
+                "GOLD COSTING",
+                "129311",
+                "129325",
+                "130177",
+                "129114"
+            ],
+            [
+                "7543",
+                "SILVER COSTING",
+                "181081",
+                "181139",
+                "182945",
+                "180105"
+            ],
+            [
+                "9300",
+                "GOLD 999 IMP T+2",
+                "131676",
+                "131676",
+                "132429",
+                "131458"
+            ],
+            [
+                "7594",
+                "GOLD 999 IMP (TODAY)",
+                "131626",
+                "131626",
+                "132379",
+                "131409"
+            ]
+        ]
+    },
+    "MANIBHADRA BULLION(API)": {
+        "domain": "http://bcast.manibhadrabullion.com:7767/VOTSBroadcastStreaming/Services/xml/GetLiveRateByTemplateID/manibhadra",
+        "url_id": "6911bc04fde49dbd94976744",
+        "type": "API",
+        "inner_text": "COMMODITY\tSELL\tBUY\tTime\nGOLD995MUM\t126675\nHigh - 128045\n\t126875\nLow - 126457\n\t12:01:50\nGOLD999MUM\t127305\nHigh - 128655\n\t127505\nLow - 127087\n\t12:01:50\nSILVER999MUM\t176782\nHigh - 178998\n\t177082\nLow - 175705\n\t12:01:54\nSILVER999AHD\t176582\nHigh - 178798\n\t177082\nLow - 175505\n\t12:01:54\n",
+        "records": [
+            {
+                "Name": "GOLD995MUM",
+                "Buy": 995,
+                "Sell": 126675.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "High -",
+                "Buy": 128045,
+                "Sell": 128045.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "126875",
+                "Buy": 126875,
+                "Sell": 126875.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "Low -",
+                "Buy": 126457,
+                "Sell": 126457.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "12:01:50",
+                "Buy": 12,
+                "Sell": null,
+                "Low": 1.0,
+                "High": 50.0,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "GOLD999MUM",
+                "Buy": 999,
+                "Sell": 127305.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "High -",
+                "Buy": 128655,
+                "Sell": 128655.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "127505",
+                "Buy": 127505,
+                "Sell": 127505.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "Low -",
+                "Buy": 127087,
+                "Sell": 127087.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "12:01:50",
+                "Buy": 12,
+                "Sell": null,
+                "Low": 1.0,
+                "High": 50.0,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "SILVER999MUM",
+                "Buy": 999,
+                "Sell": 176782.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "High -",
+                "Buy": 178998,
+                "Sell": 178998.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "177082",
+                "Buy": 177082,
+                "Sell": 177082.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "Low -",
+                "Buy": 175705,
+                "Sell": 175705.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "12:01:54",
+                "Buy": 12,
+                "Sell": null,
+                "Low": 1.0,
+                "High": 54.0,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "SILVER999AHD",
+                "Buy": 999,
+                "Sell": 176582.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "High -",
+                "Buy": 178798,
+                "Sell": 178798.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "177082",
+                "Buy": 177082,
+                "Sell": 177082.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "Low -",
+                "Buy": 175505,
+                "Sell": 175505.0,
+                "Low": null,
+                "High": null,
+                "Time": "12:02:07"
+            },
+            {
+                "Name": "12:01:54",
+                "Buy": 12,
+                "Sell": null,
+                "Low": 1.0,
+                "High": 54.0,
+                "Time": "12:02:07"
+            }
+        ]
+    },
+    "MRAJENDRA": {
+        "domain": "http://mrajender.com/",
+        "url_id": "6912cb40d0430c41a12edc31",
+        "type": "HTML",
+        "inner_text": "",
+        "records": []
+    }
+}

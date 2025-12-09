@@ -1,7 +1,7 @@
 # services/auth_service.py
 import jwt
 import os
-from controllers.urls_controller import fetch_user_allocated_urls
+from Services.url_Service import fetch_user_allocated_urls
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your_jwt_secret_key")
 HASH_ALGORITHM = os.getenv("HASH_ALGORITHM", "HS256")

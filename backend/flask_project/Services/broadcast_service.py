@@ -19,7 +19,7 @@
 
 # services/broadcast_service.py
 import logging
-from controllers.urls_controller import fetch_user_allocated_urls
+from Services.url_Service import fetch_user_allocated_urls
 
 async def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload):
     dead_clients = []

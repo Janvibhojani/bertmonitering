@@ -3,6 +3,7 @@ import logging
 
 connected_clients = set()
 
+
 def handle_connect(sio, sid):
     connected_clients.add(sid)
     logging.info(f"Client connected: {sid}")

@@ -8,6 +8,8 @@ import socketio
 from socket_instance import sio  # Import the shared Socket.IO instance
 from sockets.combine_socket import *  # Import socket event 
 from Services.scraper_service import run_scraper, stop_scraper
+from Services.json_manager import ensure_json_file, add_domain_if_missing
+from Services.url_Service import fetch_all_urls_from_db
 
 # Controller blueprints
 from controllers.admin_controller import admin_bp
@@ -42,7 +44,11 @@ def start_scraper_background():
     
 # Start Eventlet server
 if __name__ == "__main__":
-   
+    ensure_json_file()
+    
+    urls = fetch_all_urls_from_db()
+    for u in urls:
+        add_domain_if_missing(u)
       # Start scraper thread
     t = threading.Thread(target=start_scraper_background)
     t.daemon = True

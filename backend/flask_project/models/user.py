@@ -47,7 +47,7 @@ class User:
             email=data.get("email"),
             password=data.get("password"),
             role=data.get("role", "user"),
-            is_active=data.get("is_active", True),
+            is_active=data.get("is_active", False),
             urls=data.get("urls", []),
             start_date=data.get("start_date"),
             end_date=data.get("end_date"),

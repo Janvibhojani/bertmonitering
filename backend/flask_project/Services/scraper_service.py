@@ -92,7 +92,7 @@
 import asyncio
 import logging
 from utils.sraping_playwright import scrape_combined
-from controllers.urls_controller import fetch_all_urls_from_db
+from Services.url_Service import fetch_all_urls_from_db
 from utils.globel import init_browser, close_browser
 
 browser = None
@@ -116,6 +116,7 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
 
         # Only admin/all URLs (since this is combined feed)
         targets = fetch_all_urls_from_db()
+      
 
         if not targets:
             logging.warning("No targets found in database")
@@ -172,3 +173,5 @@ def stop_scraper():
     if scraper_task and not scraper_task.done():
         scraper_task.cancel()
         logging.info("🛑 Scraper task cancelled")
+        
+        
