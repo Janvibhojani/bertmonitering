@@ -265,12 +265,12 @@
 # sraping_playwright.py
 import asyncio
 import httpx
-import json
+
 import logging
 import hashlib
 import numpy as np
-from utils.helpers import clean_html, parse_gold_table, parse_table, clean_dataframe
-from utils.globel import init_browser
+from utils.helpers import parse_gold_table, parse_table, clean_dataframe
+
 from Services.json_manager import update_records
 
 # Module-level state (kept minimal)
@@ -284,18 +284,12 @@ saved_once = {}
 def _hash_text(text: str) -> str:
     return hashlib.md5(text.encode("utf-8")).hexdigest()
 
-# -----------------------
-# Reusable watcher: starts watching a single page for a target_cfg
-# -----------------------
+
+
 async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event, send_func):
     """
     Watch a single Playwright page for changes and send updates using send_func.
-    This function can be called from inside scrape_combined OR externally (for single-URL reload).
-    Args:
-        target_cfg: dict containing target configuration (must include url, _id, target, mode, only_on_change etc.)
-        page: Playwright page object already navigated to target_cfg['url']
-        stop_event: asyncio.Event to signal shutdown
-        send_func: async callable(payload) to send combined payloads to socket clients
+    Safe version with selector existence check.
     """
     selector = target_cfg.get("target")
     mode = target_cfg.get("mode", "css")
@@ -306,6 +300,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
         logging.warning(f"No selector defined for target '{name}' ({target_cfg.get('url')}). Skipping watcher.")
         return
 
+    # Build selector string
     query = (
         f"#{selector.strip()}" if mode == "id"
         else f".{selector.strip()}" if mode == "class"
@@ -314,30 +309,35 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
     prev_hash = None
 
-    # small helper to format payload
+    # helper
     def format_custom_json(cfg, records, inner_text):
         nm = cfg.get("name", "Unnamed")
-        domain = cfg.get("url")
+        domain = cfg.get("domain")
         url_id = str(cfg.get("_id", ""))
-        # print(f"📤 Sending update for {nm} ({domain}), records: {len(records)}")
         return {
             nm: {
                 "domain": domain,
                 "url_id": url_id,
                 "type": cfg.get("scrap_from", "HTML"),
-                 "inner_text": inner_text,
+                "inner_text": inner_text,
                 "records": records
             }
         }
 
     while not stop_event.is_set():
         try:
-            inner_text = await page.eval_on_selector(query, "el => el.innerText")
-            inner_html = await page.eval_on_selector(query, "el => el.innerHTML")
-
-            if inner_text is None and inner_html is None:
+            # --------------------------
+            # NEW: SAFE SELECTOR CHECK
+            # --------------------------
+            element = await page.query_selector(query)
+            if not element:
+                print(f"❌ Element NOT FOUND → {name} | selector={query}")
                 await asyncio.sleep(0.5)
                 continue
+
+            # Safe extraction (no exceptions)
+            inner_text = await element.inner_text()
+            inner_html = await element.inner_html()
 
             combined = (inner_text or "") + (inner_html or "")
             new_hash = _hash_text(combined)
@@ -345,7 +345,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
             if (not only_on_change) or (new_hash != prev_hash):
                 prev_hash = new_hash
 
-                # parse table if applicable
+                # Parse table data
                 table_data = parse_gold_table(inner_text)
                 df = clean_dataframe(table_data)
                 df = df.replace({np.nan: None})
@@ -353,15 +353,13 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
                 entry = format_custom_json(target_cfg, records, inner_text)
 
-                # update JSON records for that URL id
+                # update JSON file
                 try:
                     update_records(name, records, inner_text)
-                    # print("URL ID => ", target_cfg.get("_id"))
-                    
                 except Exception as e:
                     logging.exception(f"Failed to update JSON for {target_cfg.get('url')}: {e}")
 
-                # send payload (combined type)
+                # send payload to socket
                 try:
                     await send_func({
                         "type": "combined_scrape",
@@ -369,16 +367,14 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
                         "api_scrape": []
                     })
                 except Exception:
-                    # send_func failure shouldn't kill watcher; just log
                     logging.exception("send_func failed in start_watch_for_cfg")
 
-        except Exception:
-            # swallow individual iteration errors and retry quickly
+        except Exception as e:
+            print(f"⚠ Watch iteration error in {name}: {e}")
             await asyncio.sleep(0.1)
             continue
 
         await asyncio.sleep(0.1)
-
 
 # -----------------------
 # Open page helper (safe)
@@ -401,7 +397,7 @@ async def open_page_and_start_watch(context, target_cfg: dict, stop_event: async
     Opens a page for target_cfg and starts a watcher task using start_watch_for_cfg.
     Returns (page, task).
     """
-    url = target_cfg.get("url")
+    url = target_cfg.get("domain")
     try:
         page = await open_page(context, url)
     except Exception as e:
@@ -480,36 +476,33 @@ async def update_existing_target(context, updated_cfg, stop_event, send_func):
 
 
 async def delete_existing_target(url_id):
-    """
-    Remove a target live:
-      - stop watcher
-      - close page
-      - remove from list
-    """
     global html_pages
 
-    for i, (cfg, page, task) in enumerate(html_pages):
+    for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(url_id):
 
             # Cancel watcher
             try:
                 if task and not task.done():
                     task.cancel()
-            except:
-                pass
+                    await asyncio.sleep(0)  # allow cancellation
+            except Exception as e:
+                logging.warning(f"Task cancel error: {e}")
 
             # Close page
             try:
-                await page.close()
-            except:
-                pass
+                if page and not page.is_closed():
+                    await page.close()
+            except Exception as e:
+                logging.warning(f"Page close error: {e}")
 
             # Remove entry
-            html_pages.pop(i)
+            html_pages = [entry for entry in html_pages if str(entry[0].get("_id")) != str(url_id)]
             logging.info(f"🔴 Deleted target live: {url_id}")
             return
 
     logging.warning(f"No live target found to delete for ID: {url_id}")
+
 
 # -----------------------
 # Main combined scraper (original logic, updated to use helpers)
@@ -525,7 +518,10 @@ async def scrape_combined(browser, targets, stop_event, send_func, reload_interv
 
     html_pages = []
     prev_values = {}
-    saved_once = {t["url"]: False for t in targets}
+    print("TARGETS =>", targets)
+    saved_once = {t["domain"]: False for t in targets if t.get("scrap_from") != "API"}
+    print("Saved once initialized:", saved_once)
+    # print("Saved once initialized:", saved_once)
 
     api_targets = [t for t in targets if t.get("scrap_from") == "API"]
     html_targets = [t for t in targets if t.get("scrap_from") != "API"]
@@ -549,13 +545,13 @@ async def scrape_combined(browser, targets, stop_event, send_func, reload_interv
 
         # initialize prev_values
         for cfg, page, task in html_pages:
-            prev_values[cfg["url"]] = None
+            prev_values[cfg["domain"]] = None
 
         try:
             # API polling loop
             while not stop_event.is_set():
                 for target in api_targets:
-                    url = target.get("url")
+                    url = target.get("domain")
                     name = target.get("name", "Unnamed")
 
                     try:

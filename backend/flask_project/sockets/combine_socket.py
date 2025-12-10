@@ -578,6 +578,14 @@ def start_combined(sid, data):
         "status": "started",
         "message": "Global scraper started (ONE browser)"
     }, to=sid)
+# -------------------------
+# Send payload to connected clients
+# -------------------------
+async def send_to_clients(payload):
+    from Services.connection_service import connected_clients  # import global dict
+
+    for sid in connected_clients:
+        await sio.emit("combined_scrape", payload, to=sid)
 
 # @sio.on("start_combined")
 # def start_combined(sid, data):

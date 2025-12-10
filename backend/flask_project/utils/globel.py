@@ -63,6 +63,7 @@ import asyncio
 
 _playwright = None
 _browser = None
+current_context = None
 _browser_lock = asyncio.Lock()
 
 async def init_browser():

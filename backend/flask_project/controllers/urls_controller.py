@@ -1,13 +1,18 @@
 # controllers/urls_controller.py
 from db.mongo import urls_collection
 from middleware.auth_middleware import token_required
-from models import User
 
+from utils.sraping_playwright import add_new_target, delete_existing_target, update_existing_target,current_context
+import asyncio
+from sockets.combine_socket import send_to_clients
+
+  # must expose current browser context
+from Services.scraper_service import stop_event
 from flask import Blueprint, jsonify, request
 from bson.objectid import ObjectId
 from datetime import datetime
 from bson import ObjectId
-from Services.json_manager import add_domain,update_domain,delete_domain,update_records
+from Services.json_manager import add_domain,update_domain,delete_domain
 
 urls_bp = Blueprint("urls", __name__)  
 
@@ -33,6 +38,9 @@ def get_url(url_id):
     url_data["_id"] = str(url_data["_id"])  # Convert ObjectId to string
     return jsonify(url_data), 200
 
+import asyncio
+from utils.sraping_playwright import delete_existing_target
+
 @urls_bp.route("/<url_id>", methods=["DELETE"])
 @token_required
 def delete_url(url_id):
@@ -46,58 +54,51 @@ def delete_url(url_id):
 
     # Delete from MongoDB
     result = urls_collection.delete_one({"_id": object_id})
-
     if result.deleted_count == 0:
         return jsonify({"message": "URL not found"}), 404
 
     # Delete from JSON
     json_deleted = delete_domain(url_id)
-
-    # Refresh JSON cached records if needed
-    update_records()
-    
+    if current_context:
+        run_async_task(delete_existing_target(url_id))
+    print("✅ Domain deleted from JSON")
+     # schedule async deletion
 
     return jsonify({
         "message": "URL deleted successfully",
         "json_deleted": json_deleted
     }), 200
 
-
+import json
 @urls_bp.route("/", methods=["POST"])
 @token_required
 def create_url():
-    data = request.get_json() or {}
+    # -----------------------------
+    # 🔹 Force JSON parse & catch errors
+    # -----------------------------
+    try:
+        data = request.get_json(force=True) or {}
+        print("✅ Incoming JSON parsed successfully", json.dumps(data, indent=4))
+    except Exception as e:
+        print("JSON PARSE ERROR:", e)
+        return jsonify({"error": "Invalid JSON format"}), 400
 
-    new_domain = data.get("url")
+    # 👇 aa thi baki code jema URL create karvanu che
+    new_domain = data.get("domain")
     if not new_domain:
         return jsonify({"error": "URL is required"}), 400
-
-    # ----------------------------------------
-    # 1️⃣ Extract base domain
-    # ----------------------------------------
-    from urllib.parse import urlparse
-
-    parsed = urlparse(new_domain)
-    base_domain = f"{parsed.scheme}://{parsed.netloc}"
-    data["url"] = base_domain   
-    # ----------------------------------------
-    # 2️⃣ CHECK IF DOMAIN ALREADY EXISTS
-    # ----------------------------------------
-    existing = urls_collection.find_one({"url": base_domain})
-
+    existing = urls_collection.find_one({"domain": new_domain})
     if existing:
         return jsonify({
             "status": "error",
             "message": "Url is  already exists",
             "existing_id": str(existing["_id"]),
-            "existing_domain": existing["url"]
+            "existing_domain": existing["domain"]
         }), 409
 
-    # ----------------------------------------
-    # 3️⃣ Insert new URL
-    # ----------------------------------------
-    data["created_at"] = datetime.utcnow()
-    data["updated_at"] = datetime.utcnow()
+    data["created_at"] = datetime.utcnow().isoformat()
+    data["updated_at"] = datetime.utcnow().isoformat()
+
 
     if data.get("target"):
         data["scrap_from"] = "HTML"
@@ -111,10 +112,14 @@ def create_url():
     result = urls_collection.insert_one(data)
     data["_id"] = str(result.inserted_id)
 
-    # ----------------------------------------
-    # 4️⃣ Add to JSON
-    # ----------------------------------------
+    # Add to JSON
     add_domain(data)
+    if current_context:  # only if browser is running
+    
+        run_async_task(add_new_target(current_context, data, stop_event, lambda payload: asyncio.create_task(send_to_clients(payload))))
+    print("✅ url added to JSON")
+ 
+
     return jsonify({
         "status": "success",
         "message": "New URL created successfully",
@@ -146,10 +151,29 @@ def update_url(url_id):
     # Update JSON (single unified function)
     
     update_domain(updated)
-        
+    if current_context:
+        run_async_task(update_existing_target(current_context, updated, stop_event, lambda payload: asyncio.create_task(send_to_clients(payload))))
     print("✅ Domain updated in JSON")
 
     return jsonify(updated), 200
+
+  # the global stop_event used by the scraper
+
+def run_async_task(coro):
+    """Schedule async function in running event loop safely."""
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            asyncio.create_task(coro)
+        else:
+            loop.run_until_complete(coro)
+    except RuntimeError:
+        # If no event loop, create new
+        new_loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(new_loop)
+        new_loop.run_until_complete(coro)
+        new_loop.close()
+
 
 # @urls_bp.route("/<url_id>", methods=["PUT"])
 # @token_required

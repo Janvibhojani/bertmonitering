@@ -3,11 +3,11 @@ from datetime import datetime
 from bson import ObjectId
 
 class urls:
-    def __init__(self, name=None, _id=None,url=None, target=None, mode=None, scrap_from=None, only_on_change=False, interval_ms=0, created_at=None, updated_at=None):
+    def __init__(self, name=None, _id=None,domain=None, target=None, mode=None, scrap_from=None, only_on_change=False, interval_ms=0, created_at=None, updated_at=None):
         
         self._id = _id
         self.name = name
-        self.url = url or []
+        self.domain = domain or []
         self.target = target
         self.mode = mode
         self.scrap_from = scrap_from
@@ -20,7 +20,7 @@ class urls:
         return {
             "_id": str(self._id) if self._id else None,
             "name": self.name,
-            "url": self.url,
+            "domain": self.domain,
             "target": self.target,
             "mode": self.mode,
             "scrap_from": self.scrap_from,
@@ -36,7 +36,7 @@ class urls:
         return cls(
             id=data.get("id"),
             name=data.get("name"),
-            url=data.get("url"),
+            domain=data.get("domain"),
             target=data.get("target"),
             mode=data.get("mode"),
             scrap_from=data.get("scrap_from"),

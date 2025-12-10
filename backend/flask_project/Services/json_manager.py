@@ -5,7 +5,6 @@ import datetime
 
 JSON_FILE = "scrape_domain.json"
 
-
 # ----------------------------
 # Ensure file exists on startup
 # ----------------------------
@@ -38,11 +37,13 @@ def load_json():
 # ----------------------------
 # Save JSON
 # ----------------------------
-
-
 def save_json(data):
-    with open(JSON_FILE, "w") as f:
+    with open("scrape_Domain.json", "w") as f:
+        import json
         json.dump(data, f, indent=4)
+    print("✅ JSON saved")
+
+
 
 
 
@@ -53,7 +54,7 @@ def add_domain(url_cfg):
     if not url_id:
         return
     name = url_cfg.get("name", "Unnamed")
-    domain = url_cfg.get("url")
+    domain = url_cfg.get("domain")
     scrap_type = url_cfg.get("scrap_from", "HTML")
     target = url_cfg.get("target", None)
     mode = url_cfg.get("mode", None)
@@ -62,11 +63,6 @@ def add_domain(url_cfg):
     only_on_change = url_cfg.get("only_on_change", False)
     interval_ms = url_cfg.get("interval_ms", 0)
 
-     # prevent duplicates by domain
-    # for  item in data.items():
-    #     if item["domain"] == domain:
-    #         print(f"⚠ JSON already contains domain: {domain}")
-    #         return
     if name not in data:
         data[name] = {
             "domain": domain,
@@ -185,6 +181,8 @@ def delete_domain(url_id):
     url_id = str(url_id).strip()
     delete_key = None
     for key, item in list(data.items()):
+        print(f"Checking: key={key}, url_id_in_json={item.get('url_id')}, url_id_to_delete={url_id}")
+        
         if str(item.get("url_id")).strip() == url_id:
             delete_key = key
             break
