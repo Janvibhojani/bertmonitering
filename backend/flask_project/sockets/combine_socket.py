@@ -517,18 +517,7 @@ def authenticate(sid, data):
 def disconnect(sid):
     global authenticated_clients
     print(f"Client disconnected: {sid}")
-    # no_clients_left = handle_disconnect(sid, authenticated_clients)
     
-
-    # if no_clients_left:
-    #     logging.info("No clients left — stopping scraper & closing browser")
-
-    #     stop_scraper()
-
-    #     try:
-    #         asyncio.run(close_browser())
-    #     except Exception as e:
-    #         logging.warning(f"Browser close failed: {e}")
 
 @sio.on("join_user_room")
 def join_user_room(sid, data):
@@ -557,27 +546,6 @@ def start_combined(sid, data):
         sio.emit("status", {"error": "User not authenticated"}, to=sid)
         return
 
-    def thread_runner():
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-        try:
-            loop.run_until_complete(
-                run_scraper(
-                    sio,
-                    connected_clients,
-                    authenticated_clients
-                )
-            )
-        finally:
-            loop.close()
-
-    threading.Thread(target=thread_runner, daemon=True).start()
-
-    sio.emit("status", {
-        "status": "started",
-        "message": "Global scraper started (ONE browser)"
-    }, to=sid)
 # -------------------------
 # Send payload to connected clients
 # -------------------------
@@ -586,48 +554,22 @@ async def send_to_clients(payload):
 
     for sid in connected_clients:
         await sio.emit("combined_scrape", payload, to=sid)
+        
+from Services.scraper_service import run_scraper  # import at top
+def thread_runner():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
 
-# @sio.on("start_combined")
-# def start_combined(sid, data):
-#     user = authenticated_clients.get(sid)
-    
-#     if not user:
-#         sio.emit("status", {"error": "User not authenticated"}, to=sid)
-#         return
-
-#     def thread_runner():
-#             asyncio.run(
-#                 run_scraper(
-#                     sio,
-#                     sid,
-#                     connected_clients,
-#                     authenticated_clients
-#                 )
-#             )
-
-#     threading.Thread(target=thread_runner, daemon=True).start()
-
-#     sio.emit("status", {
-#         "status": "started",
-#         "message": f"Scraper started "
-#     }, to=sid)
-
-
-
-
-
-
-
-# temp
-    # with scraper_lock:
-    #     def thread_runner():
-    #         asyncio.run(
-    #             run_scraper(
-    #                 sio,
-    #                 sid,
-    #                 connected_clients,
-    #                 authenticated_clients
-    #             )
-    #         )
-
-    #     threading.Thread(target=thread_runner, daemon=True).start()
+    # expose this loop so other threads (Flask handlers) can schedule coros onto it
+   
+    try:
+        loop.run_until_complete(
+            run_scraper(
+                sio,
+                connected_clients,
+                authenticated_clients
+            )
+        )
+    finally:
+        # cleanup: unset scraper_loop after loop ends
+        loop.close()

@@ -1,280 +1,18 @@
-
-
-# #  ama ae che ke badhi webpage aek sathe load tay che
-# # sraping_playwright.py
-# import asyncio
-# import httpx
-# import json
-# import logging
-# import hashlib
-# import numpy as np
-# from Services.json_manager import update_records
-# from utils.helpers import clean_html, parse_gold_table, parse_table, clean_dataframe
-# from utils.globel import init_browser
-
-# html_pages = []
-# prev_values = {}
-# saved_once = {}
-
-
-# async def scrape_combined(browser, targets, stop_event, send_func, reload_interval=60):
-#     """
-#     Optimized + Ordered Startup:
-#     - Open all pages in parallel for speed
-#     - THEN start watchers sequentially (preserves OLD timing/sequence)
-#     - Keeps API polling loop and combined_buffer behaviour
-#     """
-
-#     global html_pages, prev_values, saved_once
-
-#     html_pages = []
-#     prev_values = {}
-#     saved_once = {t["url"]: False for t in targets}
-
-#     api_targets = [t for t in targets if t.get("scrap_from") == "API"]
-#     html_targets = [t for t in targets if t.get("scrap_from") != "API"]
-
-#     combined_buffer = {"html_scrape": [], "api_scrape": []}
-
-#     # Create new browser context
-#     try:
-#         context = await browser.new_context()
-#         logging.info("✅ Browser context created.")
-#     except Exception as e:
-#         await send_func({"status": "error", "message": f"Browser init failed: {str(e)}"})
-#         return
-
-#     async with httpx.AsyncClient(timeout=10) as client:
-
-#         # -------------------------
-#         # Format JSON helper
-#         # -------------------------
-#         def format_custom_json(target_cfg, records, inner_text):
-#             name = target_cfg.get("name", "Unnamed")
-#             domain = target_cfg.get("url")
-
-#             return {
-#                 name: {
-#                     "domain": domain,
-#                     "type": target_cfg.get("scrap_from", "HTML"),
-#                     "inner_text": inner_text,
-#                     "records": records
-#                 }
-#             }
-
-      
-
-#         # -------------------------
-#         # Watcher function (unchanged logic)
-#         # -------------------------
-#         async def watch_page(target_cfg, page):
-#             url = target_cfg["url"]
-#             selector = target_cfg.get("target")
-#             mode = target_cfg.get("mode", "css")
-#             only_on_change = target_cfg.get("only_on_change", True)
-
-#             query = (
-#                 f"#{selector.strip()}" if mode == "id"
-#                 else f".{selector.strip()}" if mode == "class"
-#                 else selector.strip()
-#             )
-
-#             def hash_text(text):
-#                 return hashlib.md5(text.encode("utf-8")).hexdigest()
-
-#             prev_hash = None
-
-#             logging.info(f"🔍 Watching live DOM: {url} ({query})")
-
-#             while not stop_event.is_set():
-#                 try:
-#                     inner_text = await page.eval_on_selector(query, "el => el.innerText")
-#                     inner_html = await page.eval_on_selector(query, "el => el.innerHTML")
-
-#                     if inner_text is None and inner_html is None:
-#                         await asyncio.sleep(0.5)
-#                         continue
-
-#                     combined = (inner_text or "") + (inner_html or "")
-#                     new_hash = hash_text(combined)
-
-#                     if not only_on_change or new_hash != prev_hash:
-#                         prev_hash = new_hash
-
-#                         table_data = parse_gold_table(inner_text)
-#                         df = clean_dataframe(table_data)
-#                         df = df.replace({np.nan: None})
-#                         records = df.to_dict(orient="records")
-
-#                         # await save_once(url, {"records": records})
-#                         update_records(name, records, inner_text)
-#                         entry = {
-#                             name: {
-#                                 "domain": url,
-#                                 "type": target_cfg.get("scrap_from", "HTML"),
-#                                 "inner_text": inner_text,
-#                                 "records": records
-#                             }
-#                         }
-#                         combined_buffer["html_scrape"] = [entry]
-
-                      
-
-#                 except Exception as e:
-#                     # don't spam logs, but record occasionally if needed
-#                     # logging.debug(f"watch_page error for {url}: {e}")
-#                     await asyncio.sleep(0.1)
-#                     continue
-
-#                 await asyncio.sleep(0.1)
-
-#         # ----------------------------------------
-#         # PARALLEL PAGE OPEN (fast) -> returns (cfg, page) pairs
-#         # ----------------------------------------
-#         async def open_page_pair(target_cfg):
-#             url = target_cfg["url"]
-#             try:
-#                 page = await context.new_page()
-
-#         # FAST + FULL LOAD
-#                 await page.goto(url, wait_until="networkidle", timeout=30000)
-#                 logging.info(f"⚡ Fully loaded: {url}")
-
-#         # FIRST SCRAPE IMMEDIATELY 🔥
-#                 try:
-#                     html = await page.content()
-#                     entry = {
-#                     target_cfg["name"]: {
-#                         "domain": url,
-#                         "type": "HTML",
-#                         "inner_text": html,
-#                         "records": []
-#                     }
-#                 }
-#                     combined_buffer["html_scrape"] = [entry]
-#                     await send_func({
-#                         "type": "combined_scrape",
-#                         "html_scrape": [entry],
-#                         "api_scrape": combined_buffer["api_scrape"]
-#                     })
-#                 except:
-#                     pass
-
-#                 return (target_cfg, page)
-
-#             except Exception as e:
-#                 await send_func({
-#                     "url": url,
-#                     "status": "error",
-#                 "message": f"Failed to open: {e}"
-#             })
-#             return None
-
-
-#         # Launch open_page_pair tasks in parallel
-#         open_tasks = [open_page_pair(cfg) for cfg in html_targets]
-#         opened_results = await asyncio.gather(*open_tasks)
-
-#         # Filter only successfully opened pages and store in html_pages list
-#         html_pages = [res for res in opened_results if res]
-#         for cfg, page in html_pages:
-#             prev_values[cfg["url"]] = None
-
-#         logging.info(f"✅ Opened pages: {len(html_pages)}")
-
-#         # ----------------------------------------
-#         # START WATCHERS SEQUENTIALLY (OLD timing)
-#         # ----------------------------------------
-#         watcher_tasks = []
-#         for cfg, page in html_pages:
-#             # start watcher for one page, then move to next — preserves order/timing
-#             task = asyncio.create_task(watch_page(cfg, page))
-#             watcher_tasks.append(task)
-#             logging.info(f"▶ Watcher started (sequential): {cfg['url']}")
-#             # no simultaneous start spikes: small sleep to preserve ordering (can be 0)
-#             await asyncio.sleep(0.1)  
-
-#         logging.info(f"🔥 Total Watchers Active: {len(watcher_tasks)}")
-
-#         # ----------------------------------------
-#         # API Polling Loop
-#         # ----------------------------------------
-#         try:
-#             while not stop_event.is_set():
-#                 for target in api_targets:
-#                     url = target["url"]
-#                     name = target.get("name", "Unnamed")
-
-#                     try:
-#                         resp = await client.get(url)
-
-#                         if resp.status_code == 200:
-#                             table_data = parse_table(resp.text)
-#                             # await save_once(url, table_data)
-#                             update_records(name, table_data, "")
-#                             print("URL ID => ", target.get("_id"))
-#                             api_entry = {
-#                                 "status": "success",
-#                                 "name": name,
-#                                 "url": url,
-#                                 "text": table_data,
-#                             }
-#                             combined_buffer["api_scrape"] = [api_entry]
-                            
-
-#                             await send_func({
-#                                 "type": "combined_scrape",
-#                                 "html_scrape": combined_buffer["html_scrape"] or [],
-#                                 "api_scrape": combined_buffer["api_scrape"],
-#                             })
-
-#                         else:
-#                             await send_func({
-#                                 "url": url,
-#                                 "status": "error",
-#                                 "message": f"HTTP {resp.status_code}"
-#                             })
-
-#                     except Exception as e:
-#                         await send_func({
-#                             "url": url,
-#                             "status": "error",
-#                             "message": str(e)
-#                         })
-
-#                 await asyncio.sleep(3)
-
-#         finally:
-#             # CLEANUP
-#             for t in watcher_tasks:
-#                 try:
-#                     t.cancel()
-#                 except:
-#                     pass
-
-#             # close pages explicitly (best practice)
-#             for _, page in html_pages:
-#                 try:
-#                     await page.close()
-#                 except:
-#                     pass
-
-#             await context.close()
-#             logging.info("🧹 Browser context closed.")
-
-# sraping_playwright.py
+# utils/sraping_playwright.py
 import asyncio
 import httpx
-
 import logging
 import hashlib
 import numpy as np
-from utils.helpers import parse_gold_table, parse_table, clean_dataframe
+from typing import Tuple, Optional, Callable, Any, List
 
+from utils.helpers import parse_gold_table, parse_table, clean_dataframe
 from Services.json_manager import update_records
+import utils.globel as globel  # for global current_context
 
 # Module-level state (kept minimal)
-html_pages = []
+# html_pages: list of tuples (cfg, page, task)
+html_pages: List[Tuple[dict, Any, asyncio.Task]] = []
 prev_values = {}
 saved_once = {}
 
@@ -284,12 +22,12 @@ saved_once = {}
 def _hash_text(text: str) -> str:
     return hashlib.md5(text.encode("utf-8")).hexdigest()
 
-
-
-async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event, send_func):
+# -----------------------
+# Watcher: watch a single page for a target_cfg and call send_func(payload)
+# -----------------------
+async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event, send_func: Callable[[dict], Any]):
     """
     Watch a single Playwright page for changes and send updates using send_func.
-    Safe version with selector existence check.
     """
     selector = target_cfg.get("target")
     mode = target_cfg.get("mode", "css")
@@ -297,7 +35,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
     name = target_cfg.get("name", "Unnamed")
 
     if not selector:
-        logging.warning(f"No selector defined for target '{name}' ({target_cfg.get('url')}). Skipping watcher.")
+        logging.warning(f"No selector defined for target '{name}' ({target_cfg.get('domain')}). Skipping watcher.")
         return
 
     # Build selector string
@@ -309,35 +47,61 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
     prev_hash = None
 
-    # helper
     def format_custom_json(cfg, records, inner_text):
         nm = cfg.get("name", "Unnamed")
         domain = cfg.get("domain")
         url_id = str(cfg.get("_id", ""))
+        scrap_from = cfg.get("scrap_from", "HTML")
+        target = cfg.get("target", "")
+        mode = cfg.get("mode", "css")
+        only_on_change = cfg.get("only_on_change", False)
+        interval_ms = cfg.get("interval_ms", 0)
+        created_at = cfg.get("created_at", None)
+        updated_at = cfg.get("updated_at", None)
         return {
             nm: {
                 "domain": domain,
                 "url_id": url_id,
                 "type": cfg.get("scrap_from", "HTML"),
                 "inner_text": inner_text,
-                "records": records
+                "records": records,
+                "target": target,
+                "mode": mode,
+                "only_on_change": only_on_change,
+                "interval_ms": interval_ms,
+                "created_at": created_at,
+                "updated_at": updated_at
             }
         }
 
+    logging.info(f"▶ Watcher started for {name} | selector={query}")
+
     while not stop_event.is_set():
         try:
-            # --------------------------
-            # NEW: SAFE SELECTOR CHECK
-            # --------------------------
+            # Check if page is closed before trying to access it
+            if page.is_closed():
+                logging.warning(f"Page for {name} is closed, stopping watcher")
+                break
+
+            # check selector existence safely
             element = await page.query_selector(query)
             if not element:
-                print(f"❌ Element NOT FOUND → {name} | selector={query}")
+                # selector missing on the page — wait and retry
                 await asyncio.sleep(0.5)
                 continue
 
-            # Safe extraction (no exceptions)
-            inner_text = await element.inner_text()
-            inner_html = await element.inner_html()
+            # Extract text/html with timeout
+            try:
+                inner_text = await asyncio.wait_for(element.inner_text(), timeout=5.0)
+                inner_html = await asyncio.wait_for(element.inner_html(), timeout=5.0)
+            except asyncio.TimeoutError:
+                logging.warning(f"Timeout extracting content for {name}, retrying...")
+                await asyncio.sleep(0.5)
+                continue
+            except Exception as e:
+                # If element is detached or page closed, break the loop
+                logging.warning(f"Element access failed for {name}: {e}")
+                break
 
             combined = (inner_text or "") + (inner_html or "")
             new_hash = _hash_text(combined)
@@ -345,7 +109,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
             if (not only_on_change) or (new_hash != prev_hash):
                 prev_hash = new_hash
 
-                # Parse table data
+                # parse table if applicable
                 table_data = parse_gold_table(inner_text)
                 df = clean_dataframe(table_data)
                 df = df.replace({np.nan: None})
@@ -353,11 +117,11 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
                 entry = format_custom_json(target_cfg, records, inner_text)
 
-                # update JSON file
+                # update JSON records for that URL name
                 try:
                     update_records(name, records, inner_text)
-                except Exception as e:
-                    logging.exception(f"Failed to update JSON for {target_cfg.get('url')}: {e}")
+                except Exception:
+                    logging.exception(f"Failed to update JSON for {target_cfg.get('domain')}")
 
                 # send payload to socket
                 try:
@@ -369,17 +133,27 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
                 except Exception:
                     logging.exception("send_func failed in start_watch_for_cfg")
 
+        except asyncio.CancelledError:
+            # Task cancellation requested
+            logging.info(f"Watcher for {name} cancelled.")
+            break
         except Exception as e:
-            print(f"⚠ Watch iteration error in {name}: {e}")
-            await asyncio.sleep(0.1)
+            # Check if page/browser is closed
+            if "closed" in str(e).lower() or "TargetClosedError" in str(type(e).__name__):
+                logging.info(f"Browser/page closed for {name}, stopping watcher")
+                break
+            # swallow transient errors and retry
+            logging.exception(f"⚠ Watch iteration error in {name}: {e}")
+            await asyncio.sleep(0.5)
             continue
 
         await asyncio.sleep(0.1)
 
+
 # -----------------------
 # Open page helper (safe)
 # -----------------------
-async def open_page(context, url, timeout=30000):
+async def open_page(context, url: str, timeout: int = 30000):
     """
     Open a page in the provided browser context and navigate to url.
     Returns page or raises.
@@ -392,7 +166,7 @@ async def open_page(context, url, timeout=30000):
 # -----------------------
 # Open page and start watcher (returns page and the watcher task)
 # -----------------------
-async def open_page_and_start_watch(context, target_cfg: dict, stop_event: asyncio.Event, send_func):
+async def open_page_and_start_watch(context, target_cfg: dict, stop_event: asyncio.Event, send_func: Callable[[dict], Any]):
     """
     Opens a page for target_cfg and starts a watcher task using start_watch_for_cfg.
     Returns (page, task).
@@ -416,82 +190,104 @@ async def open_page_and_start_watch(context, target_cfg: dict, stop_event: async
     task = asyncio.create_task(start_watch_for_cfg(target_cfg, page, stop_event, send_func))
     return page, task
 
+
 # ----------------------------------------------------------------------
 # ADD / UPDATE / DELETE handlers for dynamic live reload
 # ----------------------------------------------------------------------
+# utils/sraping_playwright.py
 
-async def add_new_target(context, target_cfg, stop_event, send_func):
+async def add_new_target(context, target_cfg: dict, stop_event: asyncio.Event, send_func: Callable[[dict], Any]):
     """
     Live add a new target into running scraper without restarting.
     Creates a new page, starts watcher, and appends to html_pages.
     """
     global html_pages
-
-    # open new page and watcher
+    
+    logging.info(f"🔍 add_new_target called for: {target_cfg.get('domain')}")
+    logging.info(f"🔍 Context valid: {context is not None}")
+    logging.info(f"🔍 Stop event set: {stop_event.is_set()}")
+    
     page, task = await open_page_and_start_watch(context, target_cfg, stop_event, send_func)
+    
     if not page:
-        logging.error(f"Failed to open new page for {target_cfg.get('url')}")
+        logging.error(f"❌ Failed to open new page for {target_cfg.get('domain')}")
         return
-
+    
     html_pages.append((target_cfg, page, task))
-    logging.info(f"🟢 Added NEW target live: {target_cfg.get('url')}")
+    logging.info(f"✅ Successfully added NEW target live: {target_cfg.get('domain')}")
+    logging.info(f"📊 Total pages now: {len(html_pages)}")
 
 
-async def update_existing_target(context, updated_cfg, stop_event, send_func):
+async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio.Event, send_func: Callable[[dict], Any]):
     """
     Update existing target live:
-      - close old page
-      - open new page
+      - close old page & task
+      - open new page & start watcher
       - keep same index in html_pages
     """
     global html_pages
-
-    for i, (cfg, page, task) in enumerate(html_pages):
+    for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(updated_cfg.get("_id")):
-            # Close old page & task
+            # cancel and close existing
             try:
-                if task and not task.done():
+                if task:
                     task.cancel()
-            except:
+                try:
+                    await task        # WAIT for watcher to stop
+                except:
+                    pass
+# yield to let cancellation propagate
+            except Exception:
                 pass
-
             try:
                 await page.close()
-            except:
+            except Exception:
                 pass
 
-            # Open new page with new URL
             new_page, new_task = await open_page_and_start_watch(context, updated_cfg, stop_event, send_func)
-
             if not new_page:
-                logging.error(f"Failed to open updated page for {updated_cfg.get('url')}")
+                logging.error("Failed to open updated page")
                 return
 
-            # Replace entry in list
             html_pages[i] = (updated_cfg, new_page, new_task)
-            logging.info(f"🟡 Updated target live: {updated_cfg.get('url')}")
+            logging.info(f"🟡 Updated target live: {updated_cfg.get('domain')}")
             return
 
     logging.warning(f"No live target found to update for ID: {updated_cfg.get('_id')}")
 
 
-async def delete_existing_target(url_id):
+async def delete_existing_target(url_id: str, notify_clients: Optional[Callable[[dict], Any]] = None):
+    """
+    Remove a target live:
+      - cancel watcher task
+      - close page
+      - remove from html_pages list
+      - optionally notify clients (async callable)
+    """
     global html_pages
-
     for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(url_id):
-
             # Cancel watcher
             try:
-                if task and not task.done():
+                if task:
                     task.cancel()
-                    await asyncio.sleep(0)  # allow cancellation
+                    try:
+                        await task      # CRITICAL: ensures watcher stops
+                    except:
+                        pass
             except Exception as e:
                 logging.warning(f"Task cancel error: {e}")
 
             # Close page
             try:
-                if page and not page.is_closed():
+                if page and not getattr(page, "is_closed", False):
+                    # Playwright page objects use page.close(); guard for attribute
+                    try:
+                        if callable(getattr(page, "is_closed", None)):
+                            closed = page.is_closed()
+                            # is_closed might be coroutine or property depending on Playwright; try close safely
+                    except Exception:
+                        pass
                     await page.close()
             except Exception as e:
                 logging.warning(f"Page close error: {e}")
@@ -499,29 +295,34 @@ async def delete_existing_target(url_id):
             # Remove entry
             html_pages = [entry for entry in html_pages if str(entry[0].get("_id")) != str(url_id)]
             logging.info(f"🔴 Deleted target live: {url_id}")
+
+            # Notify clients if provided
+            if notify_clients:
+                try:
+                    await notify_clients({"action": "delete", "url_id": url_id})
+                except Exception:
+                    logging.exception("notify_clients failed after delete")
+
             return
 
     logging.warning(f"No live target found to delete for ID: {url_id}")
 
 
 # -----------------------
-# Main combined scraper (original logic, updated to use helpers)
+# Main combined scraper
 # -----------------------
-async def scrape_combined(browser, targets, stop_event, send_func, reload_interval=60):
+async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, send_func: Callable[[dict], Any], reload_interval: int = 60):
     """
     Combined scraper:
-      - launches a browser context
+      - launches a browser context (created from browser param)
       - opens all HTML targets and starts watchers
       - polls API targets and sends API results
     """
-    global html_pages, prev_values, saved_once,current_context  
+    global html_pages, prev_values, saved_once
 
     html_pages = []
     prev_values = {}
-    print("TARGETS =>", targets)
     saved_once = {t["domain"]: False for t in targets if t.get("scrap_from") != "API"}
-    print("Saved once initialized:", saved_once)
-    # print("Saved once initialized:", saved_once)
 
     api_targets = [t for t in targets if t.get("scrap_from") == "API"]
     html_targets = [t for t in targets if t.get("scrap_from") != "API"]
@@ -530,8 +331,9 @@ async def scrape_combined(browser, targets, stop_event, send_func, reload_interv
 
     try:
         context = await browser.new_context()
-        current_context = context
-        logging.info("✅ Browser context created.")
+        # Export context to globel for dynamic additions
+        globel.set_scraper_context(context)
+        logging.info("✅ Browser context created and exported to utils.globel")
     except Exception as e:
         await send_func({"status": "error", "message": f"Browser init failed: {str(e)}"})
         return
@@ -572,7 +374,6 @@ async def scrape_combined(browser, targets, stop_event, send_func, reload_interv
                             records = [{"data": text_data}]
                             try:
                                 update_records(name, records, "")
-                                
                             except Exception:
                                 logging.exception("Failed to update JSON for API target")
 
@@ -609,23 +410,48 @@ async def scrape_combined(browser, targets, stop_event, send_func, reload_interv
                 await asyncio.sleep(3)
 
         finally:
-            # cancel watcher tasks and close pages
+        # Set stop event first to signal all watchers to stop
+            stop_event.set()
+        
+        # Give watchers a moment to notice the stop signal
+            await asyncio.sleep(0.5)
+        
+        # Clear the scraper context BEFORE closing
+            globel.set_scraper_context(None)
+        
+        # CANCEL watcher tasks
+            cancel_tasks = []
+            for cfg, page, task in html_pages:
+                if task and not task.done():
+                    task.cancel()
+                    cancel_tasks.append(task)
+            
+            # Wait for all tasks to finish cancellation
+                if cancel_tasks:
+                    await asyncio.gather(*cancel_tasks, return_exceptions=True)
+            
+            # CLOSE pages
+            close_tasks = []
             for cfg, page, task in html_pages:
                 try:
-                    if task and not task.done():
-                        task.cancel()
+                    if page and not page.is_closed():
+                        close_tasks.append(page.close())
                 except Exception:
                     pass
+        
+            # Wait for all pages to close
+            if close_tasks:
+                await asyncio.gather(*close_tasks, return_exceptions=True)
 
-            for cfg, page, task in html_pages:
-                try:
-                    await page.close()
-                except Exception:
-                    pass
-
+            # Close context and clear exported context
             try:
-                await context.close()
+                if context:
+                    await context.close()
             except Exception:
                 pass
 
-            logging.info("🧹 Browser context closed.")
+            globel.current_context = None
+            html_pages.clear()  # Clear the list
+            logging.info("🧹 Browser context closed and utils.globel.current_context cleared.")
+        print(f"⚠ JSON delete failed, ID not found:")
+        return "delete failed"
