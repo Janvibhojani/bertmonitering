@@ -119,7 +119,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
                 # update JSON records for that URL name
                 try:
-                    update_records(name, records, inner_text)
+                    update_records(name, records, inner_text, target_cfg)
                 except Exception:
                     logging.exception(f"Failed to update JSON for {target_cfg.get('domain')}")
 

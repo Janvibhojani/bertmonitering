@@ -38,7 +38,7 @@ def load_json():
 def save_json(data):
     # use JSON_FILE constant rather than a different filename
     with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, default=str)
     # print("✅ JSON saved")
 
 # ----------------------------
@@ -76,24 +76,27 @@ def add_domain(url_cfg):
         save_json(data)
         print(f"🟢 Added new domain to JSON: {name}")
 
-def update_records(name, records, inner_text):
+def update_records(name, records, inner_text,cfg=None):
     data = load_json()
     name = name.strip()
     if name not in data:
-        print(f"⚠ {name} not found in JSON, creating fresh entry.")
+        if not cfg:
+            print(f"⚠ {name} not found & no cfg provided, skipping")
+            return
+
         data[name] = {
-            "url_id": "",
-            "domain": "",
-            "scrap_from": "HTML",
-            "target": "",
-            "mode": "css",
-            "created_at": None,
-            "updated_at": None,
-            "only_on_change": False,
-            "interval_ms": 0,
+            "url_id": str(cfg.get("_id", "")),
+            "domain": cfg.get("domain", ""),
+            "scrap_from": cfg.get("scrap_from", "HTML"),
+            "target": cfg.get("target", ""),
+            "mode": cfg.get("mode", "css"),
+            "created_at": cfg.get("created_at"),
+            "updated_at": cfg.get("updated_at"),
+            "only_on_change": cfg.get("only_on_change", False),
+            "interval_ms": cfg.get("interval_ms", 0),
             "inner_text": "",
             "records": []
-        }
+        }   
 
     # update only relevant fields (keep metadata intact)
     entry = data[name]
@@ -111,26 +114,69 @@ def update_domain(url_cfg):
         print("⚠ No name found in url_cfg")
         return
 
+    def sanitize(obj):
+        if isinstance(obj, dict):
+            return {k: sanitize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [sanitize(i) for i in obj]
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return obj
+
     url_id = str(url_cfg.get("_id", "")).strip()
 
-    # Build/overwrite the entry for this name (keep last scraped data if present)
     old = data.get(name, {})
     data[name] = {
         "url_id": url_id,
         "domain": url_cfg.get("domain"),
         "scrap_from": url_cfg.get("scrap_from", old.get("scrap_from", "HTML")),
+
         "target": url_cfg.get("target", old.get("target", "")),
         "mode": url_cfg.get("mode", old.get("mode", "css")),
+
         "created_at": url_cfg.get("created_at", old.get("created_at")),
         "updated_at": url_cfg.get("updated_at", datetime.datetime.utcnow().isoformat()),
+
         "only_on_change": url_cfg.get("only_on_change", old.get("only_on_change", False)),
         "interval_ms": url_cfg.get("interval_ms", old.get("interval_ms", 0)),
+
         "inner_text": old.get("inner_text", ""),
         "records": old.get("records", [])
     }
 
-    save_json(data)
+    sanitized = sanitize(data)
+    save_json(sanitized)
+
     print(f"🟡 Updated domain in JSON: {name}")
+
+# def update_domain(url_cfg):
+#     data = load_json()
+
+#     name = url_cfg.get("name", "").strip()
+#     if not name:
+#         print("⚠ No name found in url_cfg")
+#         return
+
+#     url_id = str(url_cfg.get("_id", "")).strip()
+
+#     # Build/overwrite the entry for this name (keep last scraped data if present)
+#     old = data.get(name, {})
+#     data[name] = {
+#         "url_id": url_id,
+#         "domain": url_cfg.get("domain"),
+#         "scrap_from": url_cfg.get("scrap_from", old.get("scrap_from", "HTML")),
+#         "target": url_cfg.get("target", old.get("target", "")),
+#         "mode": url_cfg.get("mode", old.get("mode", "css")),
+#         "created_at": url_cfg.get("created_at", old.get("created_at")),
+#         "updated_at": url_cfg.get("updated_at", datetime.datetime.utcnow().isoformat()),
+#         "only_on_change": url_cfg.get("only_on_change", old.get("only_on_change", False)),
+#         "interval_ms": url_cfg.get("interval_ms", old.get("interval_ms", 0)),
+#         "inner_text": old.get("inner_text", ""),
+#         "records": old.get("records", [])
+#     }
+
+#     save_json(data)
+#     print(f"🟡 Updated domain in JSON: {name}")
 
 def delete_domain(url_id):
     data = load_json()
