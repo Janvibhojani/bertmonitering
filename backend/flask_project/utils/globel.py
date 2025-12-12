@@ -64,6 +64,7 @@ from typing import Optional
 
 _playwright = None
 _browser = None
+current_stop_event = None 
 current_context = None
 _browser_lock = asyncio.Lock()
 _active_scraper_context = None  # Add this for scraper context
@@ -99,6 +100,13 @@ def set_scraper_context(context):
     """Set the active scraper context for dynamic additions"""
     global _active_scraper_context
     _active_scraper_context = context
+    
+def set_stop_event(event):
+    global current_stop_event
+    current_stop_event = event
+
+def get_stop_event():
+    return current_stop_event
 
 def get_scraper_context():
     """Get the active scraper context"""
@@ -125,6 +133,10 @@ async def close_browser():
         except Exception:
             pass
         current_context = None
+        from utils.globel import current_context
+        import logging
+        if current_context is None:
+                logging.warning("No active browser context for deletion!")
 
     if _browser is not None:
         await _browser.close()
@@ -138,3 +150,20 @@ async def close_browser():
         _playwright = None
 
     print("🛑 Playwright closed")
+    
+# utils/globel.py - add these functions
+
+def is_scraper_running():
+    """Check if scraper is running"""
+    from Services.scraper_service import get_is_running
+    running = get_is_running()
+    context_running = _active_scraper_context is not None 
+    if _active_scraper_context and hasattr(_active_scraper_context, 'is_closed'):
+        context_running = not _active_scraper_context.is_closed()
+    
+    print(f"🔍 Global scraper check: Running={running}, Context={context_running}")
+    return running and context_running
+
+def get_stop_event():
+    from Services.scraper_service import get_stop_event
+    return get_stop_event()

@@ -7,7 +7,7 @@ import numpy as np
 from typing import Tuple, Optional, Callable, Any, List
 
 from utils.helpers import parse_gold_table, parse_table, clean_dataframe
-from Services.json_manager import update_records
+from Services.json_manager import update_records,update_api_records
 import utils.globel as globel  # for global current_context
 
 # Module-level state (kept minimal)
@@ -256,56 +256,42 @@ async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio
     logging.warning(f"No live target found to update for ID: {updated_cfg.get('_id')}")
 
 
-async def delete_existing_target(url_id: str, notify_clients: Optional[Callable[[dict], Any]] = None):
-    """
-    Remove a target live:
-      - cancel watcher task
-      - close page
-      - remove from html_pages list
-      - optionally notify clients (async callable)
-    """
+async def delete_existing_target(url_id: str, notify_clients=None):
     global html_pages
+    found = False
     for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(url_id):
+            found = True
             # Cancel watcher
-            try:
-                if task:
-                    task.cancel()
-                    try:
-                        await task      # CRITICAL: ensures watcher stops
-                    except:
-                        pass
-            except Exception as e:
-                logging.warning(f"Task cancel error: {e}")
+            if task:
+                task.cancel()
+                try:
+                    await task
+                except:
+                    pass
 
-            # Close page
+            # Close page safely
             try:
-                if page and not getattr(page, "is_closed", False):
-                    # Playwright page objects use page.close(); guard for attribute
-                    try:
-                        if callable(getattr(page, "is_closed", None)):
-                            closed = page.is_closed()
-                            # is_closed might be coroutine or property depending on Playwright; try close safely
-                    except Exception:
-                        pass
+                if page and not page.is_closed():   # ✅ correct check
                     await page.close()
             except Exception as e:
                 logging.warning(f"Page close error: {e}")
 
-            # Remove entry
+            # Remove from list
             html_pages = [entry for entry in html_pages if str(entry[0].get("_id")) != str(url_id)]
             logging.info(f"🔴 Deleted target live: {url_id}")
 
-            # Notify clients if provided
+            # Notify clients
             if notify_clients:
                 try:
                     await notify_clients({"action": "delete", "url_id": url_id})
                 except Exception:
                     logging.exception("notify_clients failed after delete")
+            break
 
-            return
+    if not found:
+        logging.warning(f"No live target found to delete for ID: {url_id}")
 
-    logging.warning(f"No live target found to delete for ID: {url_id}")
 
 
 # -----------------------
@@ -373,7 +359,7 @@ async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, sen
                             # update JSON for API scrape also
                             records = [{"data": text_data}]
                             try:
-                                update_records(name, records, "")
+                                update_api_records(name, text_data, target)
                             except Exception:
                                 logging.exception("Failed to update JSON for API target")
 
