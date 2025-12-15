@@ -246,15 +246,16 @@ import asyncio
 import logging
 from utils.sraping_playwright import scrape_combined
 from Services.url_Service import fetch_all_urls_from_db
-from utils.globel import init_browser, set_scraper_context, set_stop_event, get_scraper_context
+from utils.globel import init_browser, set_scraper_context, set_stop_event
 
 # Global state - અગત્યનું: અહીં proper initialization
 browser = None
 stop_event = None
+_scraper_context = None 
 scraper_task = None
 is_running = False
 scraper_loop = None
-_scraper_context = None  # Add this for better context management
+  # Add this for better context management
 
 async def run_scraper(sio, connected_clients, authenticated_clients):
     global browser, stop_event, scraper_task, is_running, scraper_loop, _scraper_context
@@ -286,7 +287,8 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
 
         # Create one browser context (required!)
         context = await browser.new_context()
-        _scraper_context = context  # Store locally
+        _scraper_context = context
+        set_scraper_context(context)  # Store locally
 
         # Save scraper context globally
         set_scraper_context(context)
@@ -309,7 +311,7 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
             while retry_count < max_retries and not stop_event.is_set():
                 try:
                     await scrape_combined(
-                        browser=browser,
+                        context=_scraper_context,
                         targets=targets,
                         stop_event=stop_event,
                         send_func=send_func
@@ -339,6 +341,7 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
     finally:
         is_running = False
         _scraper_context = None
+        set_scraper_context(None)
         logging.info("Scraper stopped")
 
 def get_stop_event():
@@ -365,21 +368,17 @@ def stop_scraper():
 
 # FIXED: Proper async function scheduling
 def schedule_on_scraper_loop(coro):
-    """
-    Schedule a coroutine to run on the scraper's event loop.
-    """
     try:
         loop = get_scraper_loop()
         if loop and loop.is_running():
-            # Create and schedule task
-            task = loop.create_task(coro)
-            logging.info(f"✅ Task scheduled on scraper loop: {coro.__name__}")
-            return task
+            future = asyncio.run_coroutine_threadsafe(coro, loop)
+            logging.info("✅ Task scheduled safely on scraper loop")
+            return future
         else:
-            logging.warning("⚠ Scraper loop not running. Cannot schedule task.")
+            logging.warning("⚠ Scraper loop not running")
             return None
     except Exception as e:
-        logging.error(f"❌ Failed to schedule task: {e}")
+        logging.error(f"❌ Schedule failed: {e}")
         return None
 
 # NEW: Direct execution function for synchronous calls

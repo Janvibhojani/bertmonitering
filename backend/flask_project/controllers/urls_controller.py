@@ -393,8 +393,7 @@ from sockets.combine_socket import send_to_clients
 # Import scraper service functions
 from Services.scraper_service import (
     schedule_on_scraper_loop,
-    get_is_running,
-    execute_on_scraper,
+    
     get_stop_event
 )
 
@@ -421,8 +420,7 @@ def check_scraper_status():
     context_available = context is not None
     context_closed = False
     
-    if context and hasattr(context, 'is_closed'):
-        context_closed = context.is_closed()
+    
     
     print(f"🔍 Scraper Status Check:")
     print(f"   - Service is_running: {running}")
@@ -460,13 +458,13 @@ def get_url(url_id):
 def create_url():
     try:
         data = request.get_json(force=True) or {}
-    except Exception as e:
+    except Exception:
         return jsonify({"error": "Invalid JSON format"}), 400
 
     new_domain = data.get("domain")
     if not new_domain:
         return jsonify({"error": "URL is required"}), 400
-    
+
     existing = urls_collection.find_one({"domain": new_domain})
     if existing:
         return jsonify({
@@ -497,45 +495,55 @@ def create_url():
 
     # Check scraper status
     scraper_active = check_scraper_status()
-    
-    # Dynamically add to running scraper
+
     if scraper_active:
         print("🎯 Attempting to add target to running scraper...")
-        
+
         async def add_target_live():
             try:
                 context = get_scraper_context()
-                if context and hasattr(context, 'is_closed') and not context.is_closed():
-                    print(f"🎯 Adding target: {data.get('domain')}")
-                    await add_new_target(
-                        context, 
-                        data, 
-                        get_stop_event(), 
-                        notify_clients
-                    )
-                    print(f"✅ Successfully added new target to running scraper: {data.get('domain')}")
-                    
-                    # Verify addition
-                    from utils.sraping_playwright import html_pages
-                    print(f"📊 Total pages after addition: {len(html_pages)}")
-                    for cfg, page, task in html_pages:
-                        print(f"   - {cfg.get('name')}: page_closed={page.is_closed() if hasattr(page, 'is_closed') else 'N/A'}")
-                    
-                else:
-                    print("⚠ Scraper context not available or closed")
+                print("--ctx-->", context)
+
+                if not context:
+                    print("❌ No scraper context")
+                    return
+
+                # ✅ SAFE CONTEXT CHECK
+                try:
+                    test_page = await context.new_page()
+                    await test_page.close()
+                except Exception as e:
+                    print("❌ Context unusable:", e)
+                    return
+
+                print(f"🎯 Adding target: {data.get('domain')}")
+
+                await add_new_target(
+                    context,
+                    data,
+                    get_stop_event(),
+                    notify_clients
+                )
+
+                print(f"✅ Successfully added new target: {data.get('domain')}")
+
+                # Verify
+                from utils.sraping_playwright import html_pages
+                print(f"📊 Total pages after addition: {len(html_pages)}")
+
             except Exception as e:
-                print(f"❌ Failed to add target to running scraper: {e}")
+                print(f"❌ Failed to add target live: {e}")
                 import traceback
                 traceback.print_exc()
 
-        # Schedule the task
         scheduled = schedule_on_scraper_loop(add_target_live())
         if scheduled:
             print("✅ Task scheduled successfully")
         else:
             print("⚠ Failed to schedule task")
+
     else:
-        print("⚠ Scraper not running or context not available. New URL will be picked up on next restart.")
+        print("⚠ Scraper not running. Will load on restart.")
 
     return jsonify({
         "status": "success",
@@ -544,23 +552,25 @@ def create_url():
         "scraper_active": scraper_active,
         "added_live": scraper_active
     }), 201
-
 @urls_bp.route("/<url_id>", methods=["PUT"])
 @token_required
 def update_url(url_id):
-    incoming = request.get_json() or {}
-    incoming["updated_at"] = datetime.utcnow()
+    incoming = request.get_json(force=True) or {}
+    incoming["updated_at"] = datetime.utcnow().isoformat()
 
     try:
         old_data = urls_collection.find_one({"_id": ObjectId(url_id)})
-    except:
+    except Exception:
         return jsonify({"message": "Invalid URL ID"}), 400
 
     if not old_data:
         return jsonify({"message": "URL not found"}), 404
 
     # Update DB
-    urls_collection.update_one({"_id": ObjectId(url_id)}, {"$set": incoming})
+    urls_collection.update_one(
+        {"_id": ObjectId(url_id)},
+        {"$set": incoming}
+    )
 
     # Fetch updated record
     updated = urls_collection.find_one({"_id": ObjectId(url_id)})
@@ -572,30 +582,56 @@ def update_url(url_id):
 
     # Check scraper status
     scraper_active = check_scraper_status()
-    
-    # Dynamically update in running scraper
+
     if scraper_active:
+        print("🎯 Attempting to update target in running scraper...")
+
         async def update_target_live():
             try:
                 context = get_scraper_context()
-                if context and hasattr(context, 'is_closed') and not context.is_closed():
-                    await update_existing_target(
-                        context,
-                        updated,
-                        get_stop_event(),
-                        notify_clients
-                    )
-                    print(f"✅ Successfully updated target in running scraper: {updated.get('domain')}")
-                else:
-                    print("⚠ Scraper context not available or closed")
+                print("CTX =", context)
+
+                if not context:
+                    print("❌ No scraper context")
+                    return
+
+                # ✅ SAFE CONTEXT CHECK
+                try:
+                    test_page = await context.new_page()
+                    await test_page.close()
+                except Exception as e:
+                    print("❌ Context unusable:", e)
+                    return
+
+                await update_existing_target(
+                    context,
+                    updated,
+                    get_stop_event(),
+                    notify_clients
+                )
+
+                print(f"✅ Successfully updated target: {updated.get('domain')}")
+
             except Exception as e:
-                print(f"❌ Failed to update target in running scraper: {e}")
+                print(f"❌ Failed to update target live: {e}")
+                import traceback
+                traceback.print_exc()
 
-        schedule_on_scraper_loop(update_target_live())
+        scheduled = schedule_on_scraper_loop(update_target_live())
+        if scheduled:
+            print("✅ Update task scheduled successfully")
+        else:
+            print("⚠ Failed to schedule update task")
+
     else:
-        print("⚠ Scraper not running or context not available. Update will be picked up on next restart.")
+        print("⚠ Scraper not running. Update will apply on restart.")
 
-    return jsonify(updated), 200
+    return jsonify({
+        "status": "success",
+        "message": "URL updated successfully",
+        "scraper_active": scraper_active
+    }), 200
+
 
 @urls_bp.route("/<url_id>", methods=["DELETE"])
 @token_required
@@ -641,48 +677,3 @@ def delete_url(url_id):
         "deleted_live": scraper_active
     }), 200
 
-@urls_bp.route("/debug/pages", methods=["GET"])
-@token_required
-def debug_pages():
-    from utils.sraping_playwright import html_pages
-    
-    pages_info = []
-    for cfg, page, task in html_pages:
-        try:
-            page_closed = page.is_closed() if hasattr(page, 'is_closed') else 'Unknown'
-        except:
-            page_closed = 'Error checking'
-            
-        pages_info.append({
-            "name": cfg.get("name", "Unnamed"),
-            "domain": cfg.get("domain"),
-            "url_id": str(cfg.get("_id", "")),
-            "page_closed": page_closed,
-            "task_done": task.done() if task else 'No task'
-        })
-    
-    return jsonify({
-        "total_pages": len(html_pages),
-        "pages": pages_info
-    }), 200
-
-@urls_bp.route("/debug/scraper-status", methods=["GET"])
-@token_required
-def debug_scraper_status():
-    """Debug endpoint to check scraper status"""
-    status = check_scraper_status()
-    
-    # Get more details
-    from Services.scraper_service import get_is_running, get_scraper_loop
-    from utils.sraping_playwright import html_pages
-    
-    loop = get_scraper_loop()
-    loop_running = loop is not None and loop.is_running() if loop else False
-    
-    return jsonify({
-        "scraper_active": status,
-        "service_is_running": get_is_running(),
-        "event_loop_running": loop_running,
-        "active_pages": len(html_pages),
-        "context_available": get_scraper_context() is not None
-    }), 200

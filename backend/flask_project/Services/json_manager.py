@@ -174,8 +174,10 @@
 import os
 import json
 import datetime
+import threading
 
 JSON_FILE = "scrape_domain.json"
+_json_lock = threading.Lock()
 
 def ensure_json_file():
     if not os.path.exists(JSON_FILE):
@@ -187,28 +189,29 @@ def load_json():
     try:
         with open(JSON_FILE, "r", encoding="utf-8") as f:
             content = f.read().strip()
-            
+
             if not content:
                 print("📁 JSON file is empty, returning empty dict")
                 return {}
-                
-            data = json.loads(content)
-            # print(f"📖 Loaded JSON with {len(data)} entries")
-            return data
+
+            return json.loads(content)
 
     except json.JSONDecodeError as e:
         print(f"❌ JSON corrupted at line {e.lineno}, column {e.colno}: {e.msg}")
         print("🔄 Resetting JSON file...")
-        
-        
+        save_json({})
+        return {}   # ✅ VERY IMPORTANT
+
     except FileNotFoundError:
         print("📁 JSON file missing. Creating new file...")
         save_json({})
         return {}
+
     except Exception as e:
         print(f"❌ Unexpected error loading JSON: {e}")
         save_json({})
         return {}
+
 def normalize_name(name):
     if not name:
         return ""
@@ -224,22 +227,11 @@ def normalize_name(name):
     
     return normalized
 
-# def load_json():
-#     try:
-#         with open(JSON_FILE, "r", encoding="utf-8") as f:
-#             return json.load(f)
-#     except json.JSONDecodeError:
-#         print("❌ JSON corrupted. Resetting file...")
-#         save_json({})
-#         return {}
-#     except FileNotFoundError:
-#         print("📁 JSON file missing. Creating new file...")
-#         save_json({})
-#         return {}
 
 def save_json(data):
-    with open(JSON_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, default=str)
+    with _json_lock:
+        with open(JSON_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=4, default=str)
 
 def normalize_name(name):
     if not name:
@@ -247,7 +239,7 @@ def normalize_name(name):
     return name.strip().upper()
 
 def add_domain(url_cfg):
-    data = load_json()
+    data = load_json() or {}
     normalized_data = {normalize_name(n): n for n in data}
     name = url_cfg.get("name", "Unnamed")
     normalized_name = normalize_name(name)
@@ -286,117 +278,83 @@ def add_domain(url_cfg):
 def update_records(name, records, inner_text, cfg=None):
     try:
         data = load_json()
-        
-        # Debug: Print what we're looking for
-        
-        # First try exact match
-        if name in data:
-            actual_key = name
-            # print(f"   ✅ Exact match found: '{actual_key}'")
-        else:
-            # Try case-insensitive match
-            normalized_name = normalize_name(name)
-            actual_key = None
-            
-            for key in data.keys():
-                if normalize_name(key) == normalized_name:
-                    actual_key = key
-                    print(f"   ✅ Case-insensitive match found: '{key}' -> '{actual_key}'")
-                    break
-            
-            if not actual_key:
-                print(f"   ⚠ No match found for '{name}' in JSON")
-                
-                if cfg:
-                    # Create new entry
-                    actual_key = name
-                    data[actual_key] = {
-                        "url_id": str(cfg.get("_id", "")) if cfg else "",
-                        "domain": cfg.get("domain", "") if cfg else "",
-                        "scrap_from": cfg.get("scrap_from", "HTML") if cfg else "HTML",
-                        "target": cfg.get("target", "") if cfg else "",
-                        "mode": cfg.get("mode", "css") if cfg else "css",
-                        "created_at": cfg.get("created_at", datetime.datetime.utcnow().isoformat()) if cfg else datetime.datetime.utcnow().isoformat(),
-                        "updated_at": cfg.get("updated_at", datetime.datetime.utcnow().isoformat()) if cfg else datetime.datetime.utcnow().isoformat(),
-                        "only_on_change": cfg.get("only_on_change", False) if cfg else False,
-                        "interval_ms": cfg.get("interval_ms", 0) if cfg else 0,
-                        "inner_text": "",
-                        "records": []
-                    }
-                    print(f"   🆕 Created new entry: '{actual_key}'")
-                else:
-                    print(f"   ❌ No cfg provided, cannot create entry")
-                    return
+        url_id = str(cfg.get("_id") or cfg.get("url_id") or "").strip()
 
-        # Now update the entry
-        if actual_key and actual_key in data:
-            entry = data[actual_key]
-            entry["inner_text"] = inner_text
-            entry["records"] = records
-            entry["updated_at"] = datetime.datetime.utcnow().isoformat()
-            data[actual_key] = entry
-            save_json(data)
-            # print(f"   📝 Updated records for '{actual_key}'")
+        if not url_id:
+            print("❌ update_records: url_id missing")
+            return
+
+        found_key = None
+
+        # 🔎 FIND ENTRY BY url_id (NOT NAME)
+        for key, obj in data.items():
+            if str(obj.get("url_id")) == url_id:
+                found_key = key
+                break
+
+        if not found_key:
+            print(f"⚠ No JSON entry found for url_id {url_id}, skipping record update")
+            return
+        if found_key != name:
+            obj = data[found_key]
+            del data[found_key]
+            data[name] = obj
+            print(f"🔁 JSON key renamed: {found_key} → {name}")
         else:
-            print(f"   ❌ Error: actual_key '{actual_key}' not in data")
+            obj = data[found_key]
             
+
+        # ✅ UPDATE SAME OBJECT ONLY
+        obj["inner_text"] = inner_text
+        obj["records"] = records
+        obj["updated_at"] = datetime.datetime.utcnow().isoformat()
+
+        save_json(data)
+        # print(f"📝 Records updated for url_id {url_id}")
+
     except Exception as e:
-        print(f"❌ Error in update_records for '{name}': {e}")
+        print(f"❌ update_records failed: {e}")
         import traceback
         traceback.print_exc()
 
 
 def update_domain(url_cfg):
     data = load_json()
-    name = url_cfg.get("name", "").strip()
-    if not name:
-        print("⚠ No name found in url_cfg")
+    url_id = str(url_cfg.get("url_id") or url_cfg.get("_id") or "").strip()
+
+    if not url_id:
+        print("⚠ No url_id found")
         return
 
-    url_id = str(url_cfg.get("_id", "")).strip()
-    
-    # Find existing entry (case-insensitive)
-    existing_key = None
-    for key, item in data.items():
-        if normalize_name(key) == normalize_name(name):
-            existing_key = key
+    found_key = None
+    found_obj = None
+
+    # 🔎 FIND EXISTING ENTRY BY url_id
+    for key, obj in data.items():
+        if str(obj.get("url_id")) == url_id:
+            found_key = key
+            found_obj = obj
             break
 
-    if existing_key:
-        # Update existing entry
-        old = data[existing_key]
-        data[existing_key] = {
-            "url_id": url_id,
-            "domain": url_cfg.get("domain", old.get("domain", "")),
-            "scrap_from": url_cfg.get("scrap_from", old.get("scrap_from", "HTML")),
-            "target": url_cfg.get("target", old.get("target", "")),
-            "mode": url_cfg.get("mode", old.get("mode", "css")),
-            "created_at": url_cfg.get("created_at", old.get("created_at")),
-            "updated_at": datetime.datetime.utcnow().isoformat(),
-            "only_on_change": url_cfg.get("only_on_change", old.get("only_on_change", False)),
-            "interval_ms": url_cfg.get("interval_ms", old.get("interval_ms", 0)),
-            "inner_text": old.get("inner_text", ""),
-            "records": old.get("records", [])
-        }
-        print(f"🟡 Updated domain in JSON: {existing_key}")
-    else:
-        # Create new entry
-        data[name] = {
-            "url_id": url_id,
-            "domain": url_cfg.get("domain"),
-            "scrap_from": url_cfg.get("scrap_from", "HTML"),
-            "target": url_cfg.get("target", ""),
-            "mode": url_cfg.get("mode", "css"),
-            "created_at": url_cfg.get("created_at"),
-            "updated_at": datetime.datetime.utcnow().isoformat(),
-            "only_on_change": url_cfg.get("only_on_change", False),
-            "interval_ms": url_cfg.get("interval_ms", 0),
-            "inner_text": "",
-            "records": []
-        }
-        print(f"🟢 Added new domain in JSON (update_domain): {name}")
-    
+    name = url_cfg.get("name", found_key or "Unnamed")
+
+    # 🗑 DELETE OLD KEY (MANDATORY)
+    if found_key:
+        del data[found_key]
+
+    # 🆕 RECREATE OBJECT (OVERWRITE GUARANTEED)
+    data[name] = {
+        "url_id": url_id,
+        "domain": url_cfg.get("domain", found_obj.get("domain") if found_obj else None),
+        "type": url_cfg.get("type", found_obj.get("type") if found_obj else "HTML"),
+        "records": found_obj.get("records", []) if found_obj else [],
+        "updated_at": datetime.datetime.utcnow().isoformat()
+    }
+
     save_json(data)
+    print(f"🔁 JSON reloaded by url_id: {url_id}")
+
+
 
 def delete_domain(url_id):
     data = load_json()
@@ -455,4 +413,4 @@ def update_api_records(name, data_text, target_cfg):
         data[entry_key] = entry
     
     save_json(data)
-    print(f"📡 Updated API records for {name}")
+    # print(f"📡 Updated API records for {name}")

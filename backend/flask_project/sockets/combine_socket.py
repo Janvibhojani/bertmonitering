@@ -75,14 +75,13 @@ def start_combined(sid, data):
         sio.emit("status", {"error": "User not authenticated"}, to=sid)
         return
 
-# -------------------------
-# Send payload to connected clients
-# -------------------------
-async def send_to_clients(payload):
-    from Services.connection_service import connected_clients  # import global dict
 
+async def send_to_clients(payload):
     for sid in connected_clients:
-        await sio.emit("combined_scrape", payload, to=sid)
+        try:
+            sio.emit("combined_scrape", payload, to=sid)
+        except Exception as e:
+            logging.error(f"Emit failed for {sid}: {e}")
         
 from Services.scraper_service import run_scraper  # import at top
 def thread_runner():

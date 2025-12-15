@@ -8,7 +8,7 @@ from typing import Tuple, Optional, Callable, Any, List
 
 from utils.helpers import parse_gold_table, parse_table, clean_dataframe
 from Services.json_manager import update_records,update_api_records
-import utils.globel as globel  # for global current_context
+from utils.globel import get_scraper_context # for global current_context
 
 # Module-level state (kept minimal)
 # html_pages: list of tuples (cfg, page, task)
@@ -207,6 +207,10 @@ async def add_new_target(context, target_cfg: dict, stop_event: asyncio.Event, s
     logging.info(f"🔍 Context valid: {context is not None}")
     logging.info(f"🔍 Stop event set: {stop_event.is_set()}")
     
+    if context is None:
+        context = get_scraper_context()
+
+    
     page, task = await open_page_and_start_watch(context, target_cfg, stop_event, send_func)
     
     if not page:
@@ -217,8 +221,7 @@ async def add_new_target(context, target_cfg: dict, stop_event: asyncio.Event, s
     logging.info(f"✅ Successfully added NEW target live: {target_cfg.get('domain')}")
     logging.info(f"📊 Total pages now: {len(html_pages)}")
 
-
-async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio.Event, send_func: Callable[[dict], Any]):
+async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio.Event, send_func):
     """
     Update existing target live:
       - close old page & task
@@ -226,25 +229,30 @@ async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio
       - keep same index in html_pages
     """
     global html_pages
+
+    if context is None:
+        context = get_scraper_context()
+
+  
+
     for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(updated_cfg.get("_id")):
-            # cancel and close existing
             try:
                 if task:
                     task.cancel()
-                try:
-                    await task        # WAIT for watcher to stop
-                except:
-                    pass
-# yield to let cancellation propagate
-            except Exception:
-                pass
-            try:
-                await page.close()
+                    try:
+                        await task
+                    except:
+                        pass
+                if page and not page.is_closed():
+                    await page.close()
             except Exception:
                 pass
 
-            new_page, new_task = await open_page_and_start_watch(context, updated_cfg, stop_event, send_func)
+            new_page, new_task = await open_page_and_start_watch(
+                context, updated_cfg, stop_event, send_func
+            )
+
             if not new_page:
                 logging.error("Failed to open updated page")
                 return
@@ -254,7 +262,6 @@ async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio
             return
 
     logging.warning(f"No live target found to update for ID: {updated_cfg.get('_id')}")
-
 
 async def delete_existing_target(url_id: str, notify_clients=None):
     global html_pages
@@ -297,7 +304,7 @@ async def delete_existing_target(url_id: str, notify_clients=None):
 # -----------------------
 # Main combined scraper
 # -----------------------
-async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, send_func: Callable[[dict], Any], reload_interval: int = 60):
+async def scrape_combined(context, targets, stop_event, send_func):
     """
     Combined scraper:
       - launches a browser context (created from browser param)
@@ -316,9 +323,6 @@ async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, sen
     combined_buffer = {"html_scrape": [], "api_scrape": []}
 
     try:
-        context = await browser.new_context()
-        # Export context to globel for dynamic additions
-        globel.set_scraper_context(context)
         logging.info("✅ Browser context created and exported to utils.globel")
     except Exception as e:
         await send_func({"status": "error", "message": f"Browser init failed: {str(e)}"})
@@ -401,10 +405,6 @@ async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, sen
         
         # Give watchers a moment to notice the stop signal
             await asyncio.sleep(0.5)
-        
-        # Clear the scraper context BEFORE closing
-            globel.set_scraper_context(None)
-        
         # CANCEL watcher tasks
             cancel_tasks = []
             for cfg, page, task in html_pages:
@@ -414,8 +414,7 @@ async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, sen
             
             # Wait for all tasks to finish cancellation
                 if cancel_tasks:
-                    await asyncio.gather(*cancel_tasks, return_exceptions=True)
-            
+                    await asyncio.gather(*cancel_tasks, return_exceptions=True) 
             # CLOSE pages
             close_tasks = []
             for cfg, page, task in html_pages:
@@ -424,20 +423,10 @@ async def scrape_combined(browser, targets: list, stop_event: asyncio.Event, sen
                         close_tasks.append(page.close())
                 except Exception:
                     pass
-        
             # Wait for all pages to close
             if close_tasks:
                 await asyncio.gather(*close_tasks, return_exceptions=True)
-
-            # Close context and clear exported context
-            try:
-                if context:
-                    await context.close()
-            except Exception:
-                pass
-
-            globel.current_context = None
+            # globel.current_context = None
             html_pages.clear()  # Clear the list
-            logging.info("🧹 Browser context closed and utils.globel.current_context cleared.")
-        print(f"⚠ JSON delete failed, ID not found:")
-        return "delete failed"
+            logging.info("🧹 Scraper stopped, watchers cleaned up.")
+       
