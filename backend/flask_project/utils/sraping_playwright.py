@@ -148,8 +148,6 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
             continue
 
         await asyncio.sleep(0.1)
-
-
 # -----------------------
 # Open page helper (safe)
 # -----------------------

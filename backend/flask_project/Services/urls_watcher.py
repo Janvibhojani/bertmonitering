@@ -10,8 +10,8 @@ from Services.connection_service import (
     connected_clients
 )
 from Services.auth_service import authenticate_user
-from Services.scraper_service import run_scraper, stop_scraper
-from utils.globel import close_browser
+# from Services.scraper_service import run_scraper, stop_scraper
+
 
 authenticated_clients = {}
 scraper_lock = threading.Lock()

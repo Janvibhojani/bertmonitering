@@ -1,21 +1,3 @@
-# # services/broadcast_service.py
-# import logging
-
-# async def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload):
-#     dead_clients = []
-
-#     for sid in connected_clients:
-#         try:
-#             sio.emit("data", payload, to=sid)
-#         except Exception as e:
-#             logging.warning(f"Emit failed for {sid}: {e}")
-#             dead_clients.append(sid)
-
-#     for sid in dead_clients:
-#         connected_clients.discard(sid)
-#         authenticated_clients.pop(sid, None)
-#     if dead_clients:
-#         logging.info(f"Cleaned up {len(dead_clients)} dead clients.")
 
 # services/broadcast_service.py
 import logging
