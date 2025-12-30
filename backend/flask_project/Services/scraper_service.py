@@ -6,7 +6,6 @@ from utils.sraping_playwright import scrape_combined
 from Services.url_Service import fetch_all_urls_from_db
 from utils.globel import init_browser, set_scraper_context, set_stop_event
 
-
 # Global state - અગત્યનું: અહીં proper initialization
 browser = None
 stop_event = None

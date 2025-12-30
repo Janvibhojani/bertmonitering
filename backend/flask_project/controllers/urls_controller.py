@@ -8,7 +8,7 @@ from datetime import datetime
 from db.mongo import urls_collection
 from middleware.auth_middleware import token_required
 from Services.json_manager import add_domain, update_domain, delete_domain
-from sockets.combine_socket import send_to_clients
+
 
 # Import scraper service functions
 from Services.scraper_service import (
@@ -29,8 +29,7 @@ from utils.globel import get_scraper_context, is_scraper_running
 
 urls_bp = Blueprint("urls", __name__)
 
-async def notify_clients(payload):
-    await send_to_clients(payload)
+
 
 def check_scraper_status():
     """Helper to check scraper status with detailed logging"""
@@ -142,7 +141,7 @@ def create_url():
                     context,
                     data,
                     get_stop_event(),
-                    notify_clients
+                  
                 )
 
                 print(f"✅ Successfully added new target: {data.get('domain')}")
@@ -227,7 +226,7 @@ def update_url(url_id):
                     context,
                     updated,
                     get_stop_event(),
-                    notify_clients
+                   
                 )
 
                 print(f"✅ Successfully updated target: {updated.get('domain')}")
@@ -282,7 +281,7 @@ def delete_url(url_id):
             try:
                 await delete_existing_target(
                     url_id,
-                    notify_clients
+                   
                 )
                 print(f"✅ Successfully deleted target from running scraper: {url_id}")
             except Exception as e:

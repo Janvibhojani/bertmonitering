@@ -353,6 +353,7 @@ async def scrape_combined(context, targets, stop_event, send_func):
                                 "status": "success",
                                 "name": name,
                                 "url": url,
+                                "url_id": str(target.get("_id")),
                                 "text": text_data,
                             }
 

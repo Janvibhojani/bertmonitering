@@ -18,7 +18,7 @@ async def init_browser():
         if _browser is None:
             _playwright = await async_playwright().start()
             _browser = await _playwright.chromium.launch(
-                headless=False,
+                headless=True,
                 args=[
                     "--disable-gpu",
                     "--disable-software-rasterizer",
@@ -34,7 +34,7 @@ async def init_browser():
                     "--mute-audio",
                     "--no-sandbox",
                     "--no-zygote",
-                    
+                    "--single-process"
                 ]
             )
     return _browser
