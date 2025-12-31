@@ -1,37 +1,60 @@
 # services/broadcast_service.py
 import logging
+from copy import deepcopy
 
 
-async def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload):
+def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload):
     """
     RULES:
     - ADMIN → FULL payload
-    - USER  → ONLY allocated url_id payload
+    - USER  → ONLY allocated url_id data
     """
 
     try:
         url_ids = extract_url_ids(payload)
-        logging.info(f"📦 url_ids found: {url_ids}")
+        logging.info(f"📦 url_ids found in payload: {url_ids}")
 
-        # 👑 ADMIN
-        sio.emit("data", {
-            **payload,
-            "meta": {"filtered": False}
-        }, room="admin")
-
-        # 👤 USERS
-        for url_id in url_ids:
-            sio.emit("data", {
+        # 👑 ADMIN → FULL PAYLOAD
+        sio.emit(
+            "data",
+            {
                 **payload,
                 "meta": {
-                    "is_Show": True,
-                    "url_id": url_id
+                    "filtered": False,
+                    "role": "admin"
                 }
-            }, room=f"url:{url_id}")
+            },
+            room="admin"
+        )
 
-    except Exception as e:
-        logging.error(f"Broadcast failed: {e}", exc_info=True)
+        # 👤 USERS → URL-WISE PAYLOAD
+        for url_id in url_ids:
+            filtered_payload = filter_payload_by_url(payload, url_id)
 
+            if not filtered_payload["html_scrape"] and not filtered_payload["api_scrape"]:
+                continue
+
+            sio.emit(
+                "data",
+                {
+                    **filtered_payload,
+                    "meta": {
+                        "filtered": True,
+                        "url_id": url_id,
+                        "role": "user"
+                        
+                    }
+                },
+                room=f"url:{url_id}"
+            )
+
+    except Exception:
+        logging.error("❌ Broadcast failed", exc_info=True)
+
+
+# -------------------------------------------------
+# Helpers
+# -------------------------------------------------
 
 def extract_url_ids(payload):
     ids = set()
@@ -48,64 +71,20 @@ def extract_url_ids(payload):
     return ids
 
 
-# # services/broadcast_service.py
-# import logging
-# from Services.url_Service import fetch_user_allocated_urls
+def filter_payload_by_url(payload, url_id):
+    filtered = {
+        "type": payload.get("type"),
+        "html_scrape": [],
+        "api_scrape": []
+    }
 
-# async def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload):
-#     dead_clients = []
+    for block in payload.get("html_scrape", []):
+        for name, data in block.items():
+            if isinstance(data, dict) and str(data.get("url_id")) == str(url_id):
+                filtered["html_scrape"].append({name: deepcopy(data)})
 
-#     urls_in_payload = extract_urls_from_payload(payload)
-#     logging.info(f"Extracted URLs => {urls_in_payload}")
-#     for sid in list(connected_clients):
-#         try:
-#             user_info = authenticated_clients.get(sid)
-#             if not user_info:
-#                 continue
+    for item in payload.get("api_scrape", []):
+        if str(item.get("url_id")) == str(url_id):
+            filtered["api_scrape"].append(deepcopy(item))
 
-#             role = user_info.get("role")
-#             user_id = user_info.get("user_id")
-
-#             # ✅ admin gets all
-#             if role == "admin":
-#                 sio.emit("data", payload, room="admin")
-#                 continue
-
-#             # ✅ fetch allowed user urls
-#             allocated = fetch_user_allocated_urls(user_id)
-#             allowed_urls = [u["url"] for u in allocated if "url" in u]
-
-#             # ✅ check intersection
-#             if urls_in_payload.intersection(set(allowed_urls)):
-#                 sio.emit("data", payload, to=sid)
-
-#         except Exception:
-#             dead_clients.append(sid)
-
-#     for sid in dead_clients:
-#         connected_clients.discard(sid)
-#         authenticated_clients.pop(sid, None)
-
-
-# def extract_urls_from_payload(payload):
-#     urls = set()
-
-#     # ✅ direct url
-#     if "url" in payload:
-#         urls.add(payload["url"])
-
-#     # ✅ api_scrape array
-#     for item in payload.get("api_scrape", []):
-#         if isinstance(item, dict) and "url" in item:
-#             urls.add(item["url"])
-
-#     # ✅ html_scrape nested object
-#     for block in payload.get("html_scrape", []):
-#         if isinstance(block, dict):
-#             for _, value in block.items():
-#                 if isinstance(value, dict):
-#                     domain = value.get("domain")
-#                     if domain:
-#                         urls.add(domain)
-
-#     return urls
+    return filtered

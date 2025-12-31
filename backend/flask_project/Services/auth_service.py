@@ -46,7 +46,7 @@
 #         sio.emit("status", {"error": f"Invalid token: {str(e)}"}, to=sid)
 
 #     return False
-
+# # services/auth_service.py
 import jwt
 import os
 from Services.url_Service import fetch_user_allocated_urls
@@ -78,12 +78,10 @@ def authenticate_user(sio, sid, data, authenticated_clients):
             "role": role
         }
 
-        # 👑 role room
-        sio.enter_room(sid, role)
-
         # 👤 personal room
         sio.enter_room(sid, f"user:{user_id}")
-
+        if role == "admin":
+            sio.enter_room(sid, "admin")
         # 🔗 url-based rooms
         allocated_urls = fetch_user_allocated_urls(user_id)
 

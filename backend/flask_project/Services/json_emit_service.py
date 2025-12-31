@@ -24,14 +24,3 @@ def emit_user_update(sio, user_id):
     except Exception as e:
         print("❌ emit error:", e)
     
-    # data = load_json()
-    # strings = data.get(user_id, [])
-
-    # sio.emit(
-    #     "string_update",
-    #     {
-    #         "user_id": user_id,
-    #         "strings": strings
-    #     },
-    #     room=user_id
-    # )

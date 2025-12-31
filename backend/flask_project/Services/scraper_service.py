@@ -54,7 +54,7 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
         from Services.broadcast_service import broadcast_to_clients
 
         async def send_func(payload):
-            await broadcast_to_clients(
+            broadcast_to_clients(
                 sio,
                 connected_clients,
                 authenticated_clients,

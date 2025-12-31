@@ -125,7 +125,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
                 # send payload to socket
                 try:
-                    await send_func({
+                    send_func({
                         "type": "combined_scrape",
                         "html_scrape": [entry],
                         "api_scrape": []
