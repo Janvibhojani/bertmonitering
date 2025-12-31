@@ -7,10 +7,9 @@ from socket_instance import sio
 from Services.connection_service import handle_connect, connected_clients
 from Services.auth_service import authenticate_user,authenticated_clients
 from Services.scraper_service import run_scraper
-from Services.scraper_service import get_is_running, schedule_on_scraper_loop
-
+from Services.scraper_service import get_is_running
 watcher_started = False
-
+user_subscriptions = {}
 
 @sio.event
 def connect(sid, environ):
@@ -28,6 +27,12 @@ def disconnect(sid):
 @sio.on("authenticate")
 def authenticate(sid, data):
     authenticate_user(sio, sid, data, authenticated_clients)
+
+@sio.on("subscribe_selected")
+def subscribe_selected(sid, data):
+    user_id = authenticated_clients[sid]["user_id"]
+    user_room = f"user:{user_id}"
+    user_subscriptions[user_room] = data
 
 
 @sio.on("start_combined")

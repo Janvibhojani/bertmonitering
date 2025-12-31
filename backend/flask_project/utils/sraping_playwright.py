@@ -175,7 +175,7 @@ async def open_page_and_start_watch(context, target_cfg: dict, stop_event: async
     except Exception as e:
         # report failure via send_func and return None
         try:
-            await send_func({
+            send_func({
                 "url": url,
                 "status": "error",
                 "message": f"Failed to open page: {e}"
@@ -323,7 +323,7 @@ async def scrape_combined(context, targets, stop_event, send_func):
     try:
         logging.info("✅ Browser context created and exported to utils.globel")
     except Exception as e:
-        await send_func({"status": "error", "message": f"Browser init failed: {str(e)}"})
+        {"status": "error", "message": f"Browser init failed: {str(e)}"}
         return
 
     async with httpx.AsyncClient(timeout=10) as client:
@@ -368,7 +368,7 @@ async def scrape_combined(context, targets, stop_event, send_func):
 
                             # send combined payload (include any latest html_scrape if present)
                             try:
-                                await send_func({
+                                send_func({
                                     "type": "combined_scrape",
                                     "html_scrape": combined_buffer["html_scrape"] or [],
                                     "api_scrape": combined_buffer["api_scrape"],
@@ -378,7 +378,7 @@ async def scrape_combined(context, targets, stop_event, send_func):
 
                         else:
                             try:
-                                await send_func({
+                                send_func({
                                     "url": url,
                                     "status": "error",
                                     "message": f"HTTP {resp.status_code}"
@@ -388,7 +388,7 @@ async def scrape_combined(context, targets, stop_event, send_func):
 
                     except Exception as e:
                         try:
-                            await send_func({
+                            send_func({
                                 "url": url,
                                 "status": "error",
                                 "message": str(e)

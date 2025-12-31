@@ -92,6 +92,18 @@ def login():
         token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=HASH_ALGORITHM)
         if isinstance(token, bytes):  # For older PyJWT versions
             token = token.decode("utf-8")
+            
+        users_collection.update_one(
+            {"_id": user_find["_id"]},
+            {
+                "$set": {
+                    "access_token": token,
+                    "token_created_at": datetime.utcnow(),
+                    "token_expires_at": datetime.utcnow() + timedelta(minutes=JWT_EXPIRY_MINUTES),
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
 
         return jsonify({
             "message": "Login successful",
@@ -106,4 +118,33 @@ def login():
         print("Error in login:", e)
         return jsonify({"message": "Internal server error"}), 500
     
-   
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "Missing JSON body"}), 400
+
+        user_id = data.get("user_id")
+        if not user_id:
+            return jsonify({"message": "user_id is required"}), 400
+
+        users_collection.update_one(
+            {"_id": ObjectId(user_id)},
+            {
+                "$unset": {
+                    "access_token": "",
+                    "token_created_at": "",
+                    "token_expires_at": ""
+                },
+                "$set": {
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
+
+        return jsonify({"message": "Logout successful"}), 200
+
+    except Exception as e:
+        print("Error in logout:", e)
+        return jsonify({"message": "Internal server error"}), 500
