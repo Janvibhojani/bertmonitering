@@ -16,3 +16,4 @@ except Exception:
 
 users_collection = db["users"]
 urls_collection = db["urls"]
+subscribe_data_collection = db["subscribe_data"]

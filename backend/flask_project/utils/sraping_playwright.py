@@ -93,7 +93,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
             # Extract text/html with timeout
             try:
                 inner_text = await asyncio.wait_for(element.inner_text(), timeout=5.0)
-                inner_html = await asyncio.wait_for(element.inner_html(), timeout=5.0)
+                # inner_html = await asyncio.wait_for(element.inner_html(), timeout=5.0)
             except asyncio.TimeoutError:
                 logging.warning(f"Timeout extracting content for {name}, retrying...")
                 await asyncio.sleep(0.5)
@@ -103,7 +103,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
                 logging.warning(f"Element access failed for {name}: {e}")
                 break
 
-            combined = (inner_text or "") + (inner_html or "")
+            combined = (inner_text or "") or ""
             new_hash = _hash_text(combined)
 
             if (not only_on_change) or (new_hash != prev_hash):
@@ -231,8 +231,6 @@ async def update_existing_target(context, updated_cfg: dict, stop_event: asyncio
     if context is None:
         context = get_scraper_context()
 
-  
-
     for i, (cfg, page, task) in enumerate(list(html_pages)):
         if str(cfg.get("_id")) == str(updated_cfg.get("_id")):
             try:
@@ -297,8 +295,6 @@ async def delete_existing_target(url_id: str, notify_clients=None):
     if not found:
         logging.warning(f"No live target found to delete for ID: {url_id}")
 
-
-
 # -----------------------
 # Main combined scraper
 # -----------------------
@@ -319,7 +315,6 @@ async def scrape_combined(context, targets, stop_event, send_func):
     html_targets = [t for t in targets if t.get("scrap_from") != "API"]
 
     combined_buffer = {"html_scrape": [], "api_scrape": []}
-
     try:
         logging.info("✅ Browser context created and exported to utils.globel")
     except Exception as e:

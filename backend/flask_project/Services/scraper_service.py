@@ -13,11 +13,13 @@ _scraper_context = None
 scraper_task = None
 is_running = False
 scraper_loop = None
+_send_func = None 
   # Add this for better context management
 
 async def run_scraper(sio, connected_clients, authenticated_clients):
-    global browser, stop_event, scraper_task, is_running, scraper_loop, _scraper_context
-    
+    # global browser, stop_event, scraper_task, is_running, scraper_loop, _scraper_context
+    global browser, stop_event, scraper_task, is_running
+    global scraper_loop, _scraper_context, _send_func
     try:
         # Prevent double start
         if is_running:
@@ -49,10 +51,10 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
         set_scraper_context(context)  # Store locally
 
         # Save scraper context globally
-        set_scraper_context(context)
+       
 
         from Services.broadcast_service import broadcast_to_clients
-
+        
         def send_func(payload):
             broadcast_to_clients(
                 sio,
@@ -60,6 +62,7 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
                 authenticated_clients,
                 payload
             )
+        _send_func = send_func
 
         async def scraper_main():
             global browser, is_running
@@ -85,8 +88,8 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
                         await asyncio.sleep(5)
 
         scraper_task = asyncio.create_task(scraper_main())
-        scraper_loop = asyncio.get_event_loop()  # Store the event loop
-        
+        # scraper_loop = asyncio.get_event_loop()  # Store the event loop
+        scraper_loop = asyncio.get_running_loop()
         logging.info(f"✅ Scraper started with {len(targets)} targets")
         logging.info(f"✅ Event loop stored: {scraper_loop}")
         logging.info(f"✅ Context available: {_scraper_context is not None}")
@@ -97,6 +100,8 @@ async def run_scraper(sio, connected_clients, authenticated_clients):
         is_running = False
         logging.exception("Error in run_scraper:", exc_info=e)
     finally:
+       
+        _send_func = None 
         is_running = False
         _scraper_context = None
         set_scraper_context(None)
@@ -111,18 +116,46 @@ def get_is_running():
 def get_scraper_loop():
     return scraper_loop
 
-def stop_scraper():
-    global stop_event, scraper_task, is_running
+def get_send_func():
+    """
+    Returns active send_func for socket broadcast
+    """
+    return _send_func
+# def stop_scraper():
+#     global stop_event, scraper_task, is_running
     
+#     if stop_event and not stop_event.is_set():
+#         stop_event.set()
+#         logging.info("🛑 Scraper stop requested")
+
+#     if scraper_task and not scraper_task.done():
+#         scraper_task.cancel()
+#         logging.info("🛑 Scraper task cancelled")
+    
+#     is_running = False
+def stop_scraper():
+    global stop_event, scraper_task, is_running, _send_func, _scraper_context
+
+    logging.info("🛑 stop_scraper() called")
+
+    # Disable socket emit immediately
+    _send_func = None
+
+    # Signal scraper loop to stop
     if stop_event and not stop_event.is_set():
         stop_event.set()
         logging.info("🛑 Scraper stop requested")
 
+    # Cancel async task if running
     if scraper_task and not scraper_task.done():
         scraper_task.cancel()
         logging.info("🛑 Scraper task cancelled")
-    
+
+    # Clear context
+    _scraper_context = None
+    set_scraper_context(None)
     is_running = False
+
 
 # FIXED: Proper async function scheduling
 def schedule_on_scraper_loop(coro):

@@ -13,8 +13,8 @@ from Services.json_manager import add_domain, update_domain, delete_domain
 # Import scraper service functions
 from Services.scraper_service import (
     schedule_on_scraper_loop,
-    
-    get_stop_event
+    get_stop_event,
+    get_send_func 
 )
 
 # Import scraping_playwright functions
@@ -29,14 +29,13 @@ from utils.globel import get_scraper_context, is_scraper_running
 
 urls_bp = Blueprint("urls", __name__)
 
-
-
 def check_scraper_status():
     """Helper to check scraper status with detailed logging"""
-    from Services.scraper_service import get_is_running
+    from Services.scraper_service import get_is_running,get_send_func
     running = get_is_running()
     context = get_scraper_context()
     context_available = context is not None
+    send_func = get_send_func()
     context_closed = False
     
     
@@ -44,10 +43,12 @@ def check_scraper_status():
     print(f"🔍 Scraper Status Check:")
     print(f"   - Service is_running: {running}")
     print(f"   - Context available: {context_available}")
+    print(f"   - Send func available: {send_func is not None}")
     print(f"   - Context closed: {context_closed}")
     print(f"   - Global is_scraper_running(): {is_scraper_running()}")
     
-    return running and context_available and not context_closed
+
+    return running and context_available and send_func is not None
 
 @urls_bp.route("/", methods=["GET"])
 @token_required
@@ -111,7 +112,7 @@ def create_url():
     # Add to JSON
     add_domain(data)
     print("✅ url added to JSON")
-
+    
     # Check scraper status
     scraper_active = check_scraper_status()
 
@@ -136,12 +137,17 @@ def create_url():
                     return
 
                 print(f"🎯 Adding target: {data.get('domain')}")
+                send_func = get_send_func()
+                if not send_func:
+                    print("❌ send_func not available")
+                    return
 
                 await add_new_target(
                     context,
                     data,
                     get_stop_event(),
-                  
+                    send_func
+                    
                 )
 
                 print(f"✅ Successfully added new target: {data.get('domain')}")
@@ -221,11 +227,16 @@ def update_url(url_id):
                 except Exception as e:
                     print("❌ Context unusable:", e)
                     return
+                send_func = get_send_func()
 
+                if not send_func:
+                    print("❌ send_func not available")
+                    return
                 await update_existing_target(
                     context,
                     updated,
                     get_stop_event(),
+                    send_func
                    
                 )
 
@@ -250,7 +261,6 @@ def update_url(url_id):
         "message": "URL updated successfully",
         "scraper_active": scraper_active
     }), 200
-
 
 @urls_bp.route("/<url_id>", methods=["DELETE"])
 @token_required
@@ -280,8 +290,7 @@ def delete_url(url_id):
         async def delete_target_live():
             try:
                 await delete_existing_target(
-                    url_id,
-                   
+                    url_id, 
                 )
                 print(f"✅ Successfully deleted target from running scraper: {url_id}")
             except Exception as e:

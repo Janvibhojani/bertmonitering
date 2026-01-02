@@ -1,5 +1,5 @@
 # controllers/admin_controller.py
-from db.mongo import users_collection
+from db.mongo import users_collection,subscribe_data_collection
 from middleware.auth_middleware import token_required, admin_required
 from models import User
 from flask import Blueprint, jsonify, request
@@ -144,7 +144,3 @@ def update_user(user_id):
         "message": "User updated successfully",
         "user": user_dict
     }), 200
-
-
-
-
