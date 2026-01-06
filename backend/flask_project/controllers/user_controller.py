@@ -5,6 +5,8 @@ from flask import Blueprint, jsonify, g, request
 from middleware.auth_middleware import token_required
 from datetime import datetime
 
+
+
 user_bp = Blueprint("user", __name__)
 
 def fetch_allocated_urls_by_user_id(user_id: str):
@@ -63,7 +65,13 @@ def fetch_allocated_urls_by_user_id(user_id: str):
 @token_required
 def subscribe_symbols():
 
-    data = request.get_json()
+    data = request.get_json(force=True)
+
+    # ✅ HARD SAFETY CHECK
+    if not isinstance(data, dict):
+        return jsonify({
+            "message": "Invalid JSON body, expected object"
+        }), 400
 
     user_id = data.get("user_id")
     subscriptions = data.get("subscriptions")
@@ -72,7 +80,6 @@ def subscribe_symbols():
         return jsonify({
             "message": "user_id and subscriptions array required"
         }), 400
-
     try:
         user_object_id = ObjectId(user_id)
     except:
@@ -83,7 +90,6 @@ def subscribe_symbols():
     doc = subscribe_data_collection.find_one({"user_id": user_object_id})
 
     if not doc:
-        # 🆕 create new user subscription doc
         subscribe_data_collection.insert_one({
             "user_id": user_object_id,
             "subscriptions": [
@@ -97,7 +103,7 @@ def subscribe_symbols():
 
         return jsonify({"message": "Subscriptions created"}), 201
 
-    # 🔁 update existing
+    # 🔁 Update existing
     for s in subscriptions:
         marketname = s["marketname"]
         symbols = s["symbols"]
@@ -132,161 +138,31 @@ def subscribe_symbols():
     return jsonify({"message": "Subscriptions updated"}), 200
 
 
-# @user_bp.route("/allocated-urls", methods=["GET"])
-# @token_required
-# def get_allocated_urls():
-#     try:
-#         user_id = g.user.get("user_id")
+def get_user_subscriptions(user_id):
+    try:
+        user_object_id = ObjectId(user_id)
+    except:
+        return []
 
-#         if not user_id:
-#             return jsonify({"message": "Invalid token"}), 401
+    doc = subscribe_data_collection.find_one(
+        {"user_id": user_object_id},
+        {"_id": 0, "subscriptions": 1}
+    )
 
-#         result = fetch_allocated_urls_by_user_id(user_id)
+    if not doc:
+        return []
 
-#         if not result:
-#             return jsonify({"message": "User not found"}), 404
+    return doc.get("subscriptions", [])
 
-#         return jsonify(result), 200
+@user_bp.route("/get_subscribelist", methods=["GET"])
+@token_required
+def get_subscriptions():
+    user_id = g.user_id   # ✅ token mathi aavse
+    if not user_id:
+        return jsonify({"message": "Invalid token user"}), 401
+    subscriptions = get_user_subscriptions(user_id)
 
-#     except Exception as e:
-#         print("❌ Error in allocated-urls route:", e)
-#         return jsonify({"message": "Internal server error"}), 500
-    
-# from flask import Blueprint, request, jsonify, g
-# from bson import ObjectId
-# from db.mongo import subscribe_data_collection
-# from middleware.auth_middleware import token_required
-# from datetime import datetime
-
-# user_bp = Blueprint("user", __name__)
-
-# @user_bp.route("/subscribe", methods=["PUT"])
-# @token_required
-# def subscribe_symbols():
-#     data = request.get_json()
-#     user_id = data.get("user_id")
-#     marketname = data.get("marketname")
-#     symbols = data.get("symbols")  # list of strings
-
-#     if not user_id or not marketname or not isinstance(symbols, list):
-#         return jsonify({"message": "user_id, marketname, and symbols array are required"}), 400
-
-#     try:
-#         user_object_id = ObjectId(user_id)
-#     except:
-#         return jsonify({"message": "Invalid user_id"}), 400
-
-#     now = datetime.utcnow()
-
-#     # 🔹 Check if user document exists
-#     existing_user = subscribe_data_collection.find_one({"user_id": user_object_id})
-
-#     if existing_user:
-#         # 🔹 Check if this market already exists
-#         market_index = None
-#         for idx, sub in enumerate(existing_user.get("subscriptions", [])):
-#             if sub.get("marketname") == marketname:
-#                 market_index = idx
-#                 break
-
-#         if market_index is not None:
-#             # Update symbols for this market
-#             subscribe_data_collection.update_one(
-#                 {"user_id": user_object_id, f"subscriptions.{market_index}.marketname": marketname},
-#                 {
-#                     "$set": {
-#                         f"subscriptions.{market_index}.subscribed_symbols": symbols,
-#                         "last_updated": now
-#                     }
-#                 }
-#             )
-#         else:
-#             # Add new market to subscriptions
-#             subscribe_data_collection.update_one(
-#                 {"user_id": user_object_id},
-#                 {
-#                     "$push": {
-#                         "subscriptions": {
-#                             "marketname": marketname,
-#                             "subscribed_symbols": symbols
-#                         }
-#                     },
-#                     "$set": {"last_updated": now}
-#                 }
-#             )
-#     else:
-#         # New user subscription document
-#         subscribe_data_collection.insert_one({
-#             "user_id": user_object_id,
-#             "subscriptions": [
-#                 {
-#                     "marketname": marketname,
-#                     "subscribed_symbols": symbols
-#                 }
-#             ],
-#             "last_updated": now
-#         })
-
-#     return jsonify({"message": "Subscription saved successfully"}), 200
-
-    
-# @user_bp.route("/subscribe", methods=["PUT"])
-# @token_required
-# def subscribe_symbols():
-#     data = request.get_json()
-
-#     # 🔹 Validation
-#     user_id = data.get("user_id")
-#     marketname = data.get("marketname")
-#     symbols = data.get("symbols")
-
-#     if not user_id or not marketname or not isinstance(symbols, list):
-#         return jsonify({
-#             "message": "user_id, marketname and symbols (array) are required"
-#         }), 400
-
-#     try:
-#         user_object_id = ObjectId(user_id)
-#     except:
-#         return jsonify({"message": "Invalid user_id"}), 400
-
-#     now = datetime.utcnow()
-
-#     # 🔁 If already exists → update
-#     existing = subscribe_data_collection.find_one({
-#         "user_id": user_object_id,
-#         "marketname": marketname
-#     })
-
-#     if existing:
-#         subscribe_data_collection.update_one(
-#             {"_id": existing["_id"]},
-#             {
-#                 "$set": {
-#                     "symbols": symbols,
-#                     "updated_at": now
-#                 }
-#             }
-#         )
-#         return jsonify({
-#             "message": "Subscription updated successfully"
-#         }), 200
-
-#     # 🆕 Else insert new
-#     subscribe_data_collection.insert_one({
-#         "user_id": user_object_id,
-#         "marketname": marketname,
-#         "symbols": symbols,
-#         "created_at": now,
-#         "updated_at": now
-#     })
-
-#     return jsonify({
-#         "message": "Subscription created successfully"
-#     }), 201
-
-
-
-@user_bp.route("/subscribe/test", methods=["GET"])
-def subscribe_test():
-    return "Subscribe route is alive", 200
+    return jsonify({
+        "user_id": user_id,
+        "subscriptions": subscriptions
+    }), 200

@@ -25,31 +25,50 @@ def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload)
             },
             room="admin"
         )
-
-        # 👤 USERS → URL-WISE PAYLOAD
         for url_id in url_ids:
             filtered_payload = filter_payload_by_url(payload, url_id)
 
             if not filtered_payload["html_scrape"] and not filtered_payload["api_scrape"]:
                 continue
 
-            sio.emit(
-                "data",
-                {
-                    **filtered_payload,
-                    "meta": {
-                        "filtered": True,
-                        "url_id": url_id,
-                        "role": "user"
-                        
-                    }
-                },
-                room=f"url:{url_id}"
-            )
+            room_name = f"url:{url_id}"
+            sids = sio.manager.rooms.get("/", {}).get(room_name, set())
 
+            for sid in sids:
+                auth = authenticated_clients.get(sid)
+                if not auth:
+                    continue
+
+                user_room = f"user:{auth['user_id']}"
+                subscriptions = user_subscriptions.get(user_room)
+
+                final_payload = filtered_payload
+
+                
+                if subscriptions:
+                    final_payload = apply_subscription_filter(
+                        filtered_payload,
+                        subscriptions
+                    )
+
+                if not final_payload["html_scrape"] and not final_payload["api_scrape"]:
+                    continue
+
+                # ✅ AHI EMIT KARVU CHE
+                sio.emit(
+                    "data",
+                    {
+                        **final_payload,
+                        "meta": {
+                            "filtered": True,
+                            "url_id": url_id,
+                            "role": "user"
+                        }
+                    },
+                    to=sid
+                )
     except Exception:
         logging.error("❌ Broadcast failed", exc_info=True)
-
 
 # -------------------------------------------------
 # Helpers
@@ -92,20 +111,17 @@ def apply_subscription_filter(payload, subscriptions):
     filtered_html = []
     filtered_api = []
 
-    # -------------------------
-    # HTML FILTERING (OLD LOGIC)
-    # -------------------------
+    # -------- HTML --------
     for entry in payload.get("html_scrape", []):
         market_name = list(entry.keys())[0]
         market_data = entry[market_name]
-
         records = market_data.get("records", [])
 
-        selected_symbols = [
-            s["symbol"]
-            for s in subscriptions
-            if s.get("marketName") == market_name and "symbol" in s
-        ]
+        # ✅ NEW LOGIC (symbols array support)
+        selected_symbols = []
+        for s in subscriptions:
+            if s.get("marketname") == market_name:
+                selected_symbols.extend(s.get("symbols", []))
 
         filtered_records = [
             r for r in records
@@ -118,29 +134,6 @@ def apply_subscription_filter(payload, subscriptions):
                     **market_data,
                     "records": filtered_records
                 }
-            })
-
-    # -------------------------
-    # API FILTERING (OLD LOGIC)
-    # -------------------------
-    for entry in payload.get("api_scrape", []):
-        market_name = entry.get("name")
-        rows = entry.get("text", [])
-
-        selected_rows = [
-            s["rowIndex"]
-            for s in subscriptions
-            if s.get("marketName") == market_name and "rowIndex" in s
-        ]
-
-        filtered_rows = [
-            rows[i] for i in selected_rows if i < len(rows)
-        ]
-
-        if filtered_rows:
-            filtered_api.append({
-                **entry,
-                "text": filtered_rows
             })
 
     return {

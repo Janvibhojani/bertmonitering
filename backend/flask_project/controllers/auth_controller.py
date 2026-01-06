@@ -81,7 +81,7 @@ def login():
         user_find = users_collection.find_one({"username": username})
         if not user_find or not check_password_hash(user_find["password"], password):
             return jsonify({"message": "Invalid credentials"}), 401
-
+        
         payload = {
             "user_id": str(user_find["_id"]),
             "username": user_find["username"],
@@ -118,33 +118,33 @@ def login():
         print("Error in login:", e)
         return jsonify({"message": "Internal server error"}), 500
     
-# @auth_bp.route("/logout", methods=["POST"])
-# def logout():
-#     try:
-#         data = request.get_json()
-#         if not data:
-#             return jsonify({"message": "Missing JSON body"}), 400
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "Missing JSON body"}), 400
 
-#         user_id = data.get("user_id")
-#         if not user_id:
-#             return jsonify({"message": "user_id is required"}), 400
+        user_id = data.get("user_id")
+        if not user_id:
+            return jsonify({"message": "user_id is required"}), 400
 
-#         users_collection.update_one(
-#             {"_id": ObjectId(user_id)},
-#             {
-#                 "$unset": {
-#                     "access_token": "",
-#                     "token_created_at": "",
-#                     "token_expires_at": ""
-#                 },
-#                 "$set": {
-#                     "updated_at": datetime.utcnow()
-#                 }
-#             }
-#         )
+        users_collection.update_one(
+            {"_id": ObjectId(user_id)},
+            {
+                "$unset": {
+                    "access_token": "",
+                    "token_created_at": "",
+                    "token_expires_at": ""
+                },
+                "$set": {
+                    "updated_at": datetime.utcnow()
+                }
+            }
+        )
 
-#         return jsonify({"message": "Logout successful"}), 200
+        return jsonify({"message": "Logout successful"}), 200
 
-#     except Exception as e:
-#         print("Error in logout:", e)
-#         return jsonify({"message": "Internal server error"}), 500
+    except Exception as e:
+        print("Error in logout:", e)
+        return jsonify({"message": "Internal server error"}), 500
