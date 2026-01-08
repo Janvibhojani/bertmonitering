@@ -75,7 +75,12 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
         }
 
     logging.info(f"▶ Watcher started for {name} | selector={query}")
-
+    send_func({
+        "type": "scraper_status",
+        "url_id": str(target_cfg.get("_id")),
+        "name": name,
+        "status": "connected"
+})
     while not stop_event.is_set():
         try:
             # Check if page is closed before trying to access it
@@ -117,11 +122,7 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
 
                 entry = format_custom_json(target_cfg, records, inner_text)
 
-                # update JSON records for that URL name
-                try:
-                    update_records(name, records, inner_text, target_cfg)
-                except Exception:
-                    logging.exception(f"Failed to update JSON for {target_cfg.get('domain')}")
+    
 
                 # send payload to socket
                 try:
@@ -142,12 +143,14 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
             if "closed" in str(e).lower() or "TargetClosedError" in str(type(e).__name__):
                 logging.info(f"Browser/page closed for {name}, stopping watcher")
                 break
-            # swallow transient errors and retry
+                    # swallow transient errors and retry
             logging.exception(f"⚠ Watch iteration error in {name}: {e}")
             await asyncio.sleep(0.5)
             continue
-
+        
         await asyncio.sleep(0.1)
+
+
 # -----------------------
 # Open page helper (safe)
 # -----------------------
@@ -159,8 +162,6 @@ async def open_page(context, url: str, timeout: int = 30000):
     page = await context.new_page()
     await page.goto(url, wait_until="commit", timeout=timeout)
     return page
-
-
 # -----------------------
 # Open page and start watcher (returns page and the watcher task)
 # -----------------------
@@ -176,6 +177,8 @@ async def open_page_and_start_watch(context, target_cfg: dict, stop_event: async
         # report failure via send_func and return None
         try:
             send_func({
+                "type": "scraper_status",
+                "url_id": str(target_cfg.get("_id")),
                 "url": url,
                 "status": "error",
                 "message": f"Failed to open page: {e}"
@@ -208,7 +211,6 @@ async def add_new_target(context, target_cfg: dict, stop_event: asyncio.Event, s
     if context is None:
         context = get_scraper_context()
 
-    
     page, task = await open_page_and_start_watch(context, target_cfg, stop_event, send_func)
     
     if not page:
@@ -356,10 +358,6 @@ async def scrape_combined(context, targets, stop_event, send_func):
 
                             # update JSON for API scrape also
                             records = [{"data": text_data}]
-                            try:
-                                update_api_records(name, text_data, target)
-                            except Exception:
-                                logging.exception("Failed to update JSON for API target")
 
                             # send combined payload (include any latest html_scrape if present)
                             try:

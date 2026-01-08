@@ -11,7 +11,7 @@ import socketio
 from socket_instance import sio
 from sockets.combine_socket import *
 from Services.scraper_service import run_scraper
-from Services.json_manager import ensure_json_file, add_domain
+
 from Services.url_Service import fetch_all_urls_from_db
 
 # Controller blueprints
@@ -62,14 +62,15 @@ def start_scraper_background():
 
 # Start Eventlet server
 if __name__ == "__main__":
-    ensure_json_file()
-    print("\n🔍 CHECKING JSON INTEGRITY...")
+    # ensure_json_file()
+    # print("\n🔍 CHECKING JSON INTEGRITY...")
     
     # Load initial URLs into scraper
     urls = fetch_all_urls_from_db()
     
     for u in urls:
-        add_domain(u)
+        # add_domain(u)
+        print(f"✅ Loaded URL into JSON: {u.get('domain')}")
         
 
     # Start scraper thread

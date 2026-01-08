@@ -7,7 +7,7 @@ from datetime import datetime
 
 from db.mongo import urls_collection
 from middleware.auth_middleware import token_required
-from Services.json_manager import add_domain, update_domain, delete_domain
+# from Services.json_manager import add_domain, update_domain, delete_domain
 
 
 # Import scraper service functions
@@ -110,7 +110,7 @@ def create_url():
     data["_id"] = str(result.inserted_id)
 
     # Add to JSON
-    add_domain(data)
+    # add_domain(data)
     print("✅ url added to JSON")
     
     # Check scraper status
@@ -202,7 +202,7 @@ def update_url(url_id):
     updated["_id"] = str(updated["_id"])
 
     # Update JSON
-    update_domain(updated)
+    # update_domain(updated)
     print("✅ Domain updated in JSON")
 
     # Check scraper status
@@ -279,7 +279,7 @@ def delete_url(url_id):
         return jsonify({"message": "URL not found"}), 404
 
     # Delete from JSON
-    json_deleted = delete_domain(url_id)
+    # json_deleted = delete_domain(url_id)
     print("✅ Domain deleted from JSON")
 
     # Check scraper status
@@ -300,7 +300,7 @@ def delete_url(url_id):
 
     return jsonify({
         "message": "URL deleted successfully",
-        "json_deleted": json_deleted,
+        # "json_deleted": json_deleted,
         "scraper_active": scraper_active,
         "deleted_live": scraper_active
     }), 200
