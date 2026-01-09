@@ -32,7 +32,9 @@ def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload)
                 continue
 
             room_name = f"url:{url_id}"
-            sids = sio.manager.rooms.get("/", {}).get(room_name, set())
+            sids = list(
+                sio.manager.rooms.get("/", {}).get(room_name, set())
+            )
 
             for sid in sids:
                 auth = authenticated_clients.get(sid)
@@ -67,6 +69,7 @@ def broadcast_to_clients(sio, connected_clients, authenticated_clients, payload)
                     },
                     to=sid
                 )
+                
     except Exception:
         logging.error("❌ Broadcast failed", exc_info=True)
 

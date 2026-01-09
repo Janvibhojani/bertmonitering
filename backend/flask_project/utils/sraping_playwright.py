@@ -7,7 +7,8 @@ import numpy as np
 from typing import Tuple, Optional, Callable, Any, List
 
 from utils.helpers import parse_gold_table, parse_table, clean_dataframe
-from Services.json_manager import update_records,update_api_records
+# from Services.json_manager import update_records,update_api_records
+from training_data.regex_patterns import decode_inner_text, extract_entities
 from utils.globel import get_scraper_context # for global current_context
 
 # Module-level state (kept minimal)
@@ -115,14 +116,14 @@ async def start_watch_for_cfg(target_cfg: dict, page, stop_event: asyncio.Event,
                 prev_hash = new_hash
 
                 # parse table if applicable
-                table_data = parse_gold_table(inner_text)
-                df = clean_dataframe(table_data)
-                df = df.replace({np.nan: None})
-                records = df.to_dict(orient="records")
+                # table_data = parse_gold_table(inner_text)
+                # df = clean_dataframe(table_data)
+                # df = df.replace({np.nan: None})
+                # records = df.to_dict(orient="records")
+                records = decode_inner_text(inner_text)
+                entities = extract_entities(inner_text)
 
                 entry = format_custom_json(target_cfg, records, inner_text)
-
-    
 
                 # send payload to socket
                 try:

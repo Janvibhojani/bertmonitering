@@ -33,13 +33,16 @@ def authenticate(sid, data):
 
 @sio.on("subscribe_selected")
 def subscribe_selected(sid, data):
+    print(f"Subscription data received from {sid}: {data}")
     user = authenticated_clients.get(sid)
+    print(f"Authenticated user for {sid}: {user}")
     if not user:
         return
 
     user_id = user["user_id"]
     user_room = f"user:{user_id}"
     user_subscriptions[user_room] = data
+    print(f"Updated subscriptions for user {user_id}: {data}")
 
 # ================= SUBSCRIBER LIST =================
 
