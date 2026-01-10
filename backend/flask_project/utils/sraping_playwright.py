@@ -8,7 +8,7 @@ from typing import Tuple, Optional, Callable, Any, List
 
 from utils.helpers import parse_gold_table, parse_table, clean_dataframe
 # from Services.json_manager import update_records,update_api_records
-from training_data.regex_patterns import decode_inner_text, extract_entities
+from sockets.regex_patterns import decode_inner_text, extract_entities
 from utils.globel import get_scraper_context # for global current_context
 
 # Module-level state (kept minimal)

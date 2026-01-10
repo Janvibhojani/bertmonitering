@@ -8,7 +8,7 @@ from typing import Any, Dict, Iterable, List, Optional, Set
 
 # Prefer project-local regex patterns (training_data/regex_patterns.py)
 try:
-    from training_data.regex_patterns import extract_entities  # type: ignore
+    from sockets.regex_patterns import extract_entities  # type: ignore
 except Exception:  # pragma: no cover
     from regex_patterns import extract_entities  # type: ignore
 

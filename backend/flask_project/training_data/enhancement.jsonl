@@ -1,0 +1,11 @@
+{"text": "HIGH 4500 LOW 4200", "entities": [[0, 4, "HIGH"], [5, 9, "LOW"]]}
+{"text": "H 5000 L 4800", "entities": [[0, 1, "HIGH"], [2, 6, "LOW"]]}
+{"text": "High: 4500 Low: 4200", "entities": [[0, 4, "HIGH"], [5, 13, "LOW"]]}
+{"text": "Time: 10:30:45", "entities": [[6, 14, "TIME"]]}
+{"text": "Updated at 14:25:30", "entities": [[11, 19, "TIME"]]}
+{"text": "10:30:45 AM", "entities": [[0, 8, "TIME"]]}
+{"text": "BUY GOLD SELL SILVER", "entities": [[0, 3, "BUY"], [4, 8, "GOLD"], [9, 13, "SELL"], [14, 20, "SILVER"]]}
+{"text": "SELL price 5000", "entities": [[0, 4, "SELL"]]}
+{"text": "Price \u20b950000", "entities": [[6, 7, "CURRENCY"]]}
+{"text": "Cost: \u20b9 45000", "entities": [[6, 7, "CURRENCY"]]}
+{"text": "INR \u20b9", "entities": [[0, 3, "CURRENCY"], [4, 5, "CURRENCY"]]}
